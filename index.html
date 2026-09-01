@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Fresh Connection — SBR 2 — Not Fast, Just Furious</title>
+<style>
+:root{
+  --slate:#1F4E5F; --brick:#8C2F39; --green:#2D6A4F;
+  --bg:#FAF9F6; --card:#FFFFFF; --ink:#23282B; --mute:#6B767C; --line:#DCE4E8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,249,246,.97);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+nav .wrap{display:flex;align-items:center;gap:6px;height:52px;overflow-x:auto}
+nav .brand{font-family:Georgia,serif;font-weight:700;color:var(--slate);
+  font-size:15px;white-space:nowrap;margin-right:10px}
+nav a{font-size:12.5px;color:var(--mute);text-decoration:none;padding:5px 9px;
+  border-radius:5px;white-space:nowrap}
+nav a:hover{background:#EAF0F3;color:var(--slate)}
+nav a.on{background:var(--slate);color:#fff}
+nav .key{font-size:11px;opacity:.55;margin-left:3px}
+
+section{padding:54px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--brick);font-weight:700;margin-bottom:9px}
+h2{font-size:32px;color:var(--slate);margin-bottom:14px;line-height:1.24}
+h3{font-size:20px;color:var(--slate);margin:26px 0 10px}
+p{margin-bottom:13px;max-width:78ch}
+p.lead{font-size:18px;color:#3B4448}
+.small{font-size:13.5px;color:var(--mute)}
+strong{font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;
+  padding:22px;margin:20px 0}
+.note{background:#EEF3F5;border-left:4px solid var(--slate);padding:15px 18px;
+  border-radius:0 7px 7px 0;margin:18px 0;font-size:14.5px}
+.note b{color:var(--slate)}
+
+/* hero */
+.hero{padding:60px 0 44px}
+.hero h1{font-size:44px;color:var(--slate);line-height:1.14;margin-bottom:12px}
+.hero .team{font-size:22px;font-weight:700;margin-bottom:5px}
+.hero .meta{font-size:14px;color:var(--mute);margin-bottom:20px}
+.hero .stand{font-size:19px;color:#3B4448;font-style:italic;max-width:70ch}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:17px}
+.kpi .n{font-size:12px;color:var(--mute);text-transform:uppercase;
+  letter-spacing:.07em;font-weight:700;min-height:30px}
+.kpi .v{font-family:Georgia,serif;font-size:31px;color:var(--slate);margin:7px 0 3px}
+.kpi .d{font-size:13px;font-weight:700}
+.up{color:var(--green)} .dn{color:var(--brick)}
+
+/* tabs */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 18px}
+.tab{padding:10px 20px;border:1px solid var(--line);background:var(--card);
+  border-radius:7px;cursor:pointer;font-size:15px;font-weight:600;color:var(--mute);
+  font-family:inherit}
+.tab:hover{border-color:var(--slate)}
+.tab.on{background:var(--slate);color:#fff;border-color:var(--slate)}
+
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px}
+.fn h4{font-size:13px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--brick);margin-bottom:9px}
+.fn ul{list-style:none;font-size:13.5px}
+.fn li{padding:4px 0;border-bottom:1px solid #F0F4F6;line-height:1.45}
+.fn li:last-child{border-bottom:none}
+
+table{border-collapse:collapse;width:100%;font-size:14px;margin:14px 0}
+th{background:#E4ECEF;color:var(--slate);text-align:right;padding:9px 11px;
+  font-size:12.5px;font-weight:700;border-bottom:2px solid var(--slate)}
+th:first-child{text-align:left}
+td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line)}
+td:first-child{text-align:left}
+tr.tot td{font-weight:700;background:#F4F8F9}
+.lock{color:#9AA5AA;font-style:italic}
+.tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:9px;
+  background:#E8ECEE;color:#7A858A;font-style:normal;font-weight:700}
+.tag.ch{background:#E3EFE8;color:var(--green)}
+.yes{color:var(--green);font-weight:700} .no{color:var(--brick);font-weight:700}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:14px;text-align:center}
+.stat .l{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.stat .v{font-family:Georgia,serif;font-size:22px;color:var(--slate);margin-top:5px}
+
+.diag{background:#FBF1F2;border-left:4px solid var(--brick);padding:15px 18px;
+  border-radius:0 7px 7px 0;margin:16px 0}
+.diag b{color:var(--brick)}
+.axis{position:relative;height:112px;margin:26px 0 10px}
+.axline{position:absolute;top:56px;left:0;right:0;height:3px;background:var(--line)}
+.axlab{position:absolute;top:66px;font-size:13px;font-weight:700;color:var(--mute)}
+.mk{position:absolute;transform:translateX(-50%);text-align:center;width:150px}
+.mk .dot{width:16px;height:16px;border-radius:50%;margin:0 auto 5px;
+  border:3px solid var(--card)}
+.mk .lb{font-size:12.5px;font-weight:700;color:var(--slate)}
+.mk .vd{font-size:11px;color:var(--mute);line-height:1.35}
+.chart{width:100%;overflow-x:auto}
+svg{display:block;max-width:100%;height:auto}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin:8px 0 0}
+.lg i{display:inline-block;width:12px;height:12px;border-radius:2px;
+  margin-right:5px;vertical-align:-1px}
+ol.rules{margin:14px 0 14px 20px;font-size:15px}
+ol.rules li{margin-bottom:7px}
+ul.b{margin:8px 0 12px 19px;font-size:14.5px}
+ul.b li{margin-bottom:5px}
+footer{padding:34px 0;text-align:center;color:var(--mute);font-size:13px}
+@media(max-width:900px){
+  .kpis,.grid4{grid-template-columns:repeat(2,1fr)}
+  .grid2,.stats{grid-template-columns:1fr}
+  .hero h1{font-size:32px} h2{font-size:25px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+ <div class="wrap">
+  <span class="brand">Not Fast, Just Furious</span>
+  <a href="#m1" data-k="1">Overview<span class="key">1</span></a>
+  <a href="#m2" data-k="2">Strategy<span class="key">2</span></a>
+  <a href="#m3" data-k="3">ROI<span class="key">3</span></a>
+  <a href="#m4" data-k="4">Promise Gap<span class="key">4</span></a>
+  <a href="#m5" data-k="5">Rounds<span class="key">5</span></a>
+  <a href="#m6" data-k="6">Turnaround<span class="key">6</span></a>
+  <a href="#m7" data-k="7">Functions<span class="key">7</span></a>
+  <a href="#m8" data-k="8">KPIs<span class="key">8</span></a>
+  <a href="#m9" data-k="9">Next<span class="key">9</span></a>
+ </div>
+</nav>
+
+<!-- 1 -->
+<section id="m1" class="hero">
+ <div class="wrap">
+  <div class="eyebrow">The Fresh Connection · Strategic Business Review 2</div>
+  <h1>Two rounds learning the chain.<br>One round selling what it could deliver.</h1>
+  <div class="team">Team: Not Fast, Just Furious</div>
+  <div class="meta">GMBA October 26 · Rounds 1–3 · Nikhil Maan (Purchasing) · Himanshu Garg (Operations) · Soumya Gupta (Supply Chain) · Neha Rajeev (Sales)</div>
+  <p class="stand">Every decision here was taken by the team as a whole, inside whatever set of options the simulation made editable that round.</p>
+  <div class="kpis" id="kpis"></div>
+ </div>
+</section>
+
+<!-- 2 -->
+<section id="m2"><div class="wrap">
+ <div class="eyebrow">Question 1</div>
+ <h2>Our supply chain strategy</h2>
+ <p class="lead">The Fresh Connection sells chilled fruit juice under service level agreements. The product is functional rather than innovative — demand is stable and predictable, margins are thin, and the differentiator is reliability rather than variety. That points to an efficient, cost-leadership supply chain.</p>
+ <p>But perishability and the contract penalty structure pull the other way. A stockout or a short-dated delivery is punished immediately through the contract index, and there is no way to recover it later.</p>
+ <div class="note"><b>Our declared strategy: cost leadership with a reliability floor.</b> We compete as the low-cost, dependable supplier of a commodity juice, not on responsiveness. We do not chase promotional upside and we do not carry speculative inventory. What we do buy without compromise is enough reliability to hit the service levels we have contracted — because the penalty for missing them exceeds the cost of preventing them by a wide margin.</p></div>
+ <h3>Where our behaviour actually sat</h3>
+ <p class="small">A strategy is what shows up in the decisions, not what is written on the slide. Judged that way, our first three rounds were three different strategies.</p>
+ <div class="card"><div class="axis" id="axis"></div></div>
+</div></section>
+
+<!-- 3 -->
+<section id="m3"><div class="wrap">
+ <div class="eyebrow">The trajectory</div>
+ <h2>We got worse before we got better</h2>
+ <div class="card"><div class="chart" id="roiChart"></div></div>
+ <div class="stats" id="roiStats"></div>
+ <p>Round 1 was the weakest round of the game and Round 2 only partially repaired it. The turnaround is entirely a Round 3 event — and it came from removing penalties, not from selling more.</p>
+</div></section>
+
+<!-- 4 -->
+<section id="m4"><div class="wrap">
+ <div class="eyebrow">The mechanism</div>
+ <h2>The promise gap</h2>
+ <p class="lead">Penalties were never a sales problem or a supply problem in isolation. They were a gap problem — the distance between what we contracted and what the chain could actually deliver.</p>
+ <div class="card">
+  <div class="chart" id="gapChart"></div>
+  <div class="lg">
+   <span><i style="background:#1F4E5F"></i>Contracted index</span>
+   <span><i style="background:#8C2F39"></i>Attained — wide gap</span>
+   <span><i style="background:#2D6A4F"></i>Attained — gap closed</span>
+  </div>
+ </div>
+ <div class="grid2">
+  <div><table id="gapTable"></table></div>
+  <div><p>In Round 2 we contracted a Food &amp; Groceries index of 1.0394 and attained 0.7394. In Round 3 we contracted 1.0079 and attained 0.9790.</p>
+  <p><strong>We did not sell less in Round 3.</strong> We sold what we could actually deliver, and realized revenue rose by €470,656.</p></div>
+ </div>
+</div></section>
+
+<!-- 5 -->
+<section id="m5"><div class="wrap">
+ <div class="eyebrow">Question 2 · Decisions and alignment</div>
+ <h2>Round by round</h2>
+ <div class="tabs" id="rTabs"></div>
+ <div id="rBody"></div>
+</div></section>
+
+<!-- 6 -->
+<section id="m6"><div class="wrap">
+ <div class="eyebrow">Round 2 → Round 3</div>
+ <h2>How the turnaround happened</h2>
+ <p>A swing of €601,492 in operating profit. Almost all of it is penalty recovery.</p>
+ <div class="card"><div class="chart" id="wfChart"></div></div>
+ <p>Contracted sales revenue barely moved across all four rounds — within a 3.4% band. As a team we have not yet grown the business. Every euro of improvement came from removing penalties and cost, which is worth knowing, because it means the revenue upside is still entirely untouched.</p>
+</div></section>
+
+<!-- 7 -->
+<section id="m7"><div class="wrap">
+ <div class="eyebrow">Question 2 · Functional decisions</div>
+ <h2>By function</h2>
+ <p class="small">Decision items named in the assignment brief. Items we were never able to change are shown greyed.</p>
+ <div class="tabs" id="fTabs"></div>
+ <div id="fBody"></div>
+</div></section>
+
+<!-- 8 -->
+<section id="m8"><div class="wrap">
+ <div class="eyebrow">Question 3</div>
+ <h2>KPIs achieved and missed</h2>
+ <div class="card"><table id="kpiTable"></table></div>
+ <p class="small"><strong>Note 1.</strong> Round 3 service level of 94.4% against a 95% promise is a miss on paper, but the residual penalty of €48,884 is 1.9% of contracted revenue — within the range where the index premium earned exceeds the penalty paid. We treat it as met.</p>
+ <p class="small"><strong>Note 2.</strong> The Round 1 obsolescence result is a false positive. It fell because Vitamin C shortages prevented us building C-power stock that would later have expired, not because shelf life was managed well.</p>
+ <h3>Functional scores</h3>
+ <div class="card"><table id="fnTable"></table></div>
+ <div class="note"><b>The purchasing score moved against us deliberately.</b> The 0.9678 index in Round 1 was the best functional purchasing score and the worst company result of the game. On components with thin supplier free capacity, that functional metric and team ROI pull in opposite directions — the clearest example in three rounds of a functional KPI that has to be overridden by team strategy.</div>
+</div></section>
+
+<!-- 9 -->
+<section id="m9"><div class="wrap">
+ <div class="eyebrow">Question 4</div>
+ <h2>Rounds 4 to 6</h2>
+ <p class="lead">Continue cost leadership with a reliability floor, and begin monetising the reliability we have built. We have proven the chain can hold 94.4% service at 3.4% obsolescence. Rounds 4 to 6 carry higher weight in the final score, so consistency matters more than experimentation — but we have never once tried to grow revenue, and that is where the remaining upside sits.</p>
+ <ol class="rules">
+  <li>Change one thing per function per round.</li>
+  <li>Never raise a promise before the capability appears in the previous round's results.</li>
+  <li>Protect the €48,884 penalty level as a floor, not a target.</li>
+ </ol>
+ <h3>How each function will help</h3>
+ <div class="grid4" id="helpCards"></div>
+ <h3>Round 4 targets</h3>
+ <div class="card"><table id="tgtTable"></table></div>
+</div></section>
+
+<footer><div class="wrap">The Fresh Connection · SBR 2 · Not Fast, Just Furious · Rounds 1–3<br>
+<span class="small">Press keys 1–9 to jump between sections.</span></div></footer>
+
+<script>
+/* ---------------- DATA ---------------- */
+var KPI=[
+ {n:"ROI",v:["-7.68","-13.61","-11.59","+3.64"],num:[-7.68,-13.61,-11.59,3.64],
+  disp:"+3.64%",d:"+11.32 pts vs Round 0",good:1},
+ {n:"Gross margin (customer)",v:[903148,755006,700701,1288377],
+  num:[903148,755006,700701,1288377],disp:"€1,288,377",d:"+42.7% vs Round 0",good:1},
+ {n:"Obsolete products",num:[8.1,7.8,11.1,3.4],disp:"3.4%",d:"-4.7 pts vs Round 0",good:1},
+ {n:"Service level, order lines",num:[92.0,90.3,89.2,94.4],disp:"94.4%",
+  d:"+2.4 pts vs Round 0",good:1}
+];
+var ROI=[-7.68,-13.61,-11.59,3.64];
+var GAP=[
+ {c:"Food & Groceries",d:[[1.0010,0.7308],[1.0394,0.7394],[1.0079,0.9790]]},
+ {c:"LAND Market",    d:[[0.9640,0.8438],[0.9908,0.8314],[0.9628,0.9568]]},
+ {c:"Dominick's",     d:[[1.0229,0.9345],[1.0457,0.9043],[1.0317,1.0205]]}
+];
+var WF=[
+ {l:"R2 operating profit",v:-457334,t:"start"},
+ {l:"Penalties reduced",v:539239},
+ {l:"Contracted revenue",v:-68584},
+ {l:"COGS reduced",v:117020},
+ {l:"Indirect cost reduced",v:13817},
+ {l:"Rounding",v:-186},
+ {l:"R3 operating profit",v:144158,t:"end"}
+];
+var SUP=[
+ {s:"Mono Packaging",fc:"18%",a:90.0,r:[78.8,92.6,93.0]},
+ {s:"Trio PET PLC",fc:"3%",a:84.0,r:[60.3,89.0,88.5]},
+ {s:"Miami Oranges",fc:"38%",a:98.0,r:[97.9,98.3,97.8]},
+ {s:"NO8DO Mango",fc:"4%",a:90.0,r:[79.3,92.8,93.3]},
+ {s:"Seitan Vitamins",fc:"50%",a:80.0,r:[67.8,93.5,93.8]}
+];
+var STOCK=[
+ {c:"Pack 1 litre",v:[4.25,5.92,3.82,4.01]},
+ {c:"PET",v:[4.15,5.64,3.23,3.25]},
+ {c:"Orange",v:[4.53,6.29,4.24,5.19]},
+ {c:"Mango",v:[4.45,5.30,6.22,6.55]},
+ {c:"Vitamin C",v:[4.18,8.00,5.26,5.06]}
+];
+var SHELF=[75,80,75], OBS=[7.8,11.1,3.4];
+
+var ROUNDS=[
+{t:"Round 1",sub:"The misalignment round",
+ diag:"We ran a cost-leadership strategy on the buy side and a responsive strategy on the sell side at the same time, and paid for the contradiction three times over — in penalties, in overflow, and in flexible labour.",
+ f:[
+  ["Purchasing",["Agreed reliability 90 / 84 / 98 / 90 / 80 %","Delivery windows 2d / 1d / 1wk / 2d / 1wk","Trade units Pallet / Pallet / Tank / IBC / Drum","Weighted contract index 0.9678"]],
+  ["Operations",["Raw materials 900 → 950 pallet locations","Finished goods 1,500 → 1,000 pallet locations","Two shifts on Swiss Fill 2","No capacity projects offered yet"]],
+  ["Supply Chain",["Component safety stock 4.0 / 4.0 / 4.0 / 3.0 / 8.0 wks","Lot size 4.0 weeks on all components","FG safety stock 3.0 / 1.5 / 3.0 / 3.0 / 1.5 / 3.0","Production interval 10 days"]],
+  ["Sales",["Service level 94.6 / 95.0 / 94.0 % on order lines","Shelf life 75% (inherited, not editable)","Order deadline 20:00","Trade unit Layer / Layer / Pallet"]]
+ ],
+ k:["ROI −13.61%","Gross margin €755,006","Obsoletes 7.8%","Service level 90.3%"],
+ rev:"Four of five suppliers fell below the reliability we had agreed with them. Both warehouses overflowed, costing €145,126 combined. Penalties rose to €487,548."},
+{t:"Round 2",sub:"The half-correction",
+ diag:"We fixed the supply chain and then immediately spent the improvement on a promise it could not fund — raising the shelf-life commitment by five points in the same round finished goods safety stock was cut by a third.",
+ f:[
+  ["Purchasing",["Agreed reliability raised to 95% (Orange 98%)","Pack window tightened to 1 day","Trade units FTL / FTL / Tank / Tank / IBC","Weighted contract index 0.9867"]],
+  ["Operations",["Raw materials 950 → 900 pallet locations","Finished goods held at 1,000","Two shifts maintained","SMED purchased — €10,000. Line speed declined"]],
+  ["Supply Chain",["Component safety stock cut to 2.0 / 2.0 / 2.0 / 1.5 / 2.0","Lot size 2.0 / 2.0 / 4.0 / 4.0 / 4.0","FG safety stock standardised at 2.0 weeks","Production interval 10 days"]],
+  ["Sales",["Service level 95.0% on all three accounts","Shelf life raised 75% → 80%","Order deadline 20:00","Trade unit moved to full Pallet for all"]]
+ ],
+ k:["ROI −11.59%","Gross margin €700,701","Obsoletes 11.1%","Service level 89.2%"],
+ rev:"The supply-side repair worked — raw materials overflow fell from €97,186 to €1,202 and stock costs fell €137,957. But obsolescence jumped to 11.1% and penalties reached €588,123, the worst of the game."},
+{t:"Round 3",sub:"The alignment round",
+ diag:"We stopped selling a supply chain we did not have, bought the one capacity upgrade that removed overtime, and left everything that was already working alone.",
+ f:[
+  ["Purchasing",["No change — Round 2 settings retained in full","Agreed reliability 95 / 95 / 98 / 95 / 95 %","Trade units unchanged","Weighted contract index 0.9867"]],
+  ["Operations",["Raw materials 900 → 950 pallet locations","Finished goods 1,000 → 1,050 pallet locations","Two shifts maintained","Increase speed purchased — €15,000. SMED retained"]],
+  ["Supply Chain",["One change only — Orange safety stock 2.0 → 3.0 wks","All other component buffers held","FG safety stock held at 2.0 weeks","Production interval 10 days"]],
+  ["Sales",["Service level 95.0% on all three accounts","Shelf life pulled back 80% → 75%","Order deadline 20:00","Contract indices allowed to fall"]]
+ ],
+ k:["ROI +3.64%","Gross margin €1,288,377","Obsoletes 3.4%","Service level 94.4%"],
+ rev:"Obsolescence fell on every product, service level rose on every product, overtime fell from 10.9% to 2.7% of capacity, and penalties collapsed 91.7% to €48,884."}
+];
+
+var FUNCS=[
+{n:"Purchasing",
+ rows:[
+  ["Lead time","15 / 10 / 30 / 10 / 60 days","unchanged","unchanged","lock"],
+  ["Supplier location","France / Spain / USA / Spain / China","unchanged","unchanged","lock"],
+  ["Trade unit","Pallet / Pallet / Tank / IBC / Drum","FTL / FTL / Tank / Tank / IBC","unchanged","ch"],
+  ["Delivery window","2d / 1d / 1wk / 2d / 1wk","1d / 1d / 1wk / 2d / 1wk","unchanged","ch"],
+  ["Agreed delivery reliability","90 / 84 / 98 / 90 / 80 %","95 / 95 / 98 / 95 / 95 %","unchanged","ch"],
+  ["Weighted contract index","0.9678","0.9867","0.9867",""]
+ ],
+ chart:"sup",
+ note:"Supplier free capacity determines whether a low contract index is a saving or a trap. Miami Oranges at 38% free capacity delivered 97.9% even in our worst round. Trio PET at 3% and NO8DO Mango at 4% fell sharply the moment agreed reliability was relaxed. The discount from a low-capacity supplier is not real — they cannot deliver the reduced service level either, so we pay the penalty and get the discount.",
+ ord:"Component order throughout: Pack 1 litre, PET, Orange, Mango, Vitamin C."},
+{n:"Operations",
+ rows:[
+  ["Size of inbound warehouse","950 pallet locations","900","950","ch"],
+  ["Size of outbound warehouse","1,000 pallet locations","1,000","1,050","ch"],
+  ["Number of shifts","2","2","2",""],
+  ["SMED","Not offered","Purchased (€10,000)","Retained","ch"],
+  ["Breakdown trailing","Not offered","Not offered","Not offered","lock"],
+  ["Increase speed","Not offered","Declined","Purchased (€15,000)","ch"]
+ ],
+ chart:"ops",
+ note:"A €15,000 line speed project removed €46,804 of flexible manpower in the same round while raising plan adherence by 7.5 points. By contrast, cutting 500 finished goods pallet locations in Round 1 saved €50,000 of space cost and caused €60,298 of overflow and extra labour. Buying capability beats buying or cutting space — a relationship the simulation only revealed once we had tried both.",
+ ord:""},
+{n:"Supply Chain",
+ rows:[
+  ["Safety stock (raw material), wks","4.0 / 4.0 / 4.0 / 3.0 / 8.0","2.0 / 2.0 / 2.0 / 1.5 / 2.0","2.0 / 2.0 / 3.0 / 1.5 / 2.0","ch"],
+  ["Lot size (raw material), wks","4.0 on all","2.0 / 2.0 / 4.0 / 4.0 / 4.0","unchanged","ch"],
+  ["Frozen period","3 weeks","3 weeks","3 weeks","lock"],
+  ["Production interval (FG)","10 days","10 days","10 days",""],
+  ["Safety stock (FG), wks","3.0 / 1.5 / 3.0 / 3.0 / 1.5 / 3.0","2.0 on all","2.0 on all","ch"]
+ ],
+ chart:"stock",
+ note:"The Round 2 buffer reduction was strategically correct and tactically mistimed. Cutting component safety stock was right — supply had just become reliable, so the buffer was no longer needed. Cutting finished goods safety stock in the same round the shelf-life promise rose was not, because those two decisions compound. Component buffers protect against supply variability; finished goods buffers protect against the service promise. Only the first had become unnecessary.",
+ ord:"Component order: Pack 1 litre, PET, Orange, Mango, Vitamin C. Product order: Orange 1L, Orange/C-power 1L, Orange/Mango 1L, Orange PET, Orange/C-power PET, Orange/Mango PET."},
+{n:"Sales",
+ rows:[
+  ["Service level","94.6 / 95.0 / 94.0 % (order lines)","95.0% on all","95.0% on all","ch"],
+  ["Shelf life","75% (inherited)","80%","75%","ch"],
+  ["Order deadline","20:00","20:00","20:00",""],
+  ["Trade unit","Layer / Layer / Pallet","Pallet on all","Pallet on all","ch"],
+  ["Shortage rule","Proportional","Proportional","Proportional",""]
+ ],
+ chart:"shelf",
+ note:"Products have a 20-week shelf life. Promising 80% means only stock with at least 16 weeks remaining can be shipped, leaving a four-week internal window instead of the five weeks a 75% promise allows. We met the 80% promise, but we met it by scrapping the stock that could not. Giving back five points of shelf-life promise in Round 3 bought back nearly eight points of obsolescence and five points of service level.",
+ ord:"Customer order: Food & Groceries, LAND Market, Dominick's."}
+];
+
+var HELP=[
+ ["Sales",["Raise shelf life to 80% for Dominick's only — it takes only PET products, lowest obsolescence at 3.0–3.2%","Hold F&G and LAND Market at 75% and 95%","Test promotional pressure on the two C-power products","Consider customer priority shortage rule, Dominick's first"]],
+ ["Supply Chain",["Reduce production interval below 10 days on high-volume products","Raise FG safety stock on the two C-power products (88.7% and 91.2% service)","Hold component safety stocks — 99.1–99.9% availability on four of five"]],
+ ["Operations",["Reduce raw materials from 950 toward 800 — R3 used 624 at 65.7% utilisation","Hold finished goods at 1,050 until production interval is shortened","Hold two shifts, retain SMED and speed increase"]],
+ ["Purchasing",["Change nothing unless a new decision unlocks","Upgrade PET from Poor quality if that becomes editable","Evaluate alternatives to Trio PET on free capacity, not price"]]
+];
+
+/* ---------------- HELPERS ---------------- */
+function E(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmt(n){return n.toLocaleString("en-US");}
+function svgOpen(w,h){return '<svg viewBox="0 0 '+w+' '+h+'" width="100%" style="max-width:'+w+'px" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif">';}
+function txt(x,y,s,o){o=o||{};return '<text x="'+x+'" y="'+y+'" font-size="'+(o.fs||13)+'" fill="'+(o.f||"#6B767C")+'" text-anchor="'+(o.a||"middle")+'"'+(o.w?' font-weight="'+o.w+'"':'')+'>'+E(s)+'</text>';}
+function rect(x,y,w,h,f,o){o=o||{};return '<rect x="'+x+'" y="'+y+'" width="'+Math.max(0,w)+'" height="'+Math.max(0,h)+'" fill="'+f+'"'+(o.rx?' rx="'+o.rx+'"':'')+'/>';}
+function line(x1,y1,x2,y2,c,w){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="'+(w||1)+'"/>';}
+
+/* ---------------- 1. KPI CARDS ---------------- */
+function spark(vals,goodDown){
+ var w=104,h=30,mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),r=(mx-mn)||1;
+ var pts=vals.map(function(v,i){
+   return (4+i*(w-8)/(vals.length-1))+','+(h-4-((v-mn)/r)*(h-8));}).join(" ");
+ var last=vals[vals.length-1], best=goodDown?(last<=mn+r*0.35):(last>=mx-r*0.35);
+ var col=best?"#2D6A4F":"#8C2F39";
+ var lx=4+(vals.length-1)*(w-8)/(vals.length-1), ly=h-4-((last-mn)/r)*(h-8);
+ return svgOpen(w,h)+'<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2"/>'+
+   '<circle cx="'+lx+'" cy="'+ly+'" r="3.2" fill="'+col+'"/></svg>';
+}
+document.getElementById("kpis").innerHTML=KPI.map(function(k){
+ var down = k.n==="Obsolete products";
+ return '<div class="kpi"><div class="n">'+E(k.n)+'</div><div class="v">'+E(k.disp)+
+  '</div><div class="d up">'+E(k.d)+'</div>'+spark(k.num,down)+'</div>';
+}).join("");
+
+/* ---------------- 2. STRATEGY AXIS ---------------- */
+(function(){
+ var marks=[
+  {p:32,l:"Round 1",v:"Cost leadership buying, responsive selling. The two halves contradicted each other.",split:1},
+  {p:52,l:"Round 2",v:"Supply fixed, demand promises still unfunded.",split:1},
+  {p:15,l:"Round 3",v:"Coherent end to end. First profitable round.",split:0}
+ ];
+ var h='<div class="axline"></div>'+
+  '<div class="axlab" style="left:0">◀ Cost Leadership</div>'+
+  '<div class="axlab" style="right:0;text-align:right">Responsive ▶</div>';
+ marks.forEach(function(m,i){
+  var top=(i===2)?0:(i===0?0:0);
+  var col=m.split?"#8C2F39":"#2D6A4F";
+  var y=(i===0)?2:(i===1)?86:2;
+  var ypos=(i===1)?"top:78px":"top:0px";
+  h+='<div class="mk" style="left:'+m.p+'%;'+ypos+'">'+
+     (i===1?'':'<div class="dot" style="background:'+col+';box-shadow:0 0 0 2px '+col+'"></div>')+
+     '<div class="lb">'+m.l+'</div><div class="vd">'+E(m.v)+'</div>'+
+     (i===1?'<div class="dot" style="background:'+col+';box-shadow:0 0 0 2px '+col+';margin-top:5px"></div>':'')+
+     '</div>';
+ });
+ document.getElementById("axis").innerHTML=h;
+})();
+
+/* ---------------- 3. ROI CHART ---------------- */
+(function(){
+ var w=760,h=330,ml=64,mr=20,mt=26,mb=54;
+ var pw=w-ml-mr,ph=h-mt-mb,labs=["Round 0","Round 1","Round 2","Round 3"];
+ var mx=6,mn=-16,r=mx-mn;
+ function Y(v){return mt+ph-((v-mn)/r)*ph;}
+ var s=svgOpen(w,h),bw=pw/ROI.length*0.5;
+ for(var g=-15;g<=5;g+=5){s+=line(ml,Y(g),w-mr,Y(g),"#E8EDEF",1)+txt(ml-10,Y(g)+4,g+"%",{a:"end",fs:12});}
+ s+=line(ml,Y(0),w-mr,Y(0),"#23282B",1.5);
+ ROI.forEach(function(v,i){
+  var cx=ml+pw/ROI.length*(i+0.5), y0=Y(0), y1=Y(v);
+  var col=v<0?"#8C2F39":"#2D6A4F";
+  s+=rect(cx-bw/2,Math.min(y0,y1),bw,Math.abs(y1-y0),col,{rx:3});
+  s+=txt(cx,v<0?y1+19:y1-9,(v>0?"+":"")+v.toFixed(2)+"%",{f:col,w:700,fs:15});
+  s+=txt(cx,h-24,labs[i],{fs:13,w:600,f:"#23282B"});
+ });
+ s+=txt(ml+pw/4*3.5,Y(3.64)-32,"First profitable round",{f:"#2D6A4F",fs:12.5,w:700});
+ document.getElementById("roiChart").innerHTML=s+"</svg>";
+ document.getElementById("roiStats").innerHTML=
+  [["Operating profit R2 → R3","−457,334 → +144,158"],
+   ["Contract penalties R2 → R3","−588,123 → −48,884"],
+   ["Realized revenue R2 → R3","2,119,872 → 2,590,527"]]
+  .map(function(a){return '<div class="stat"><div class="l">'+E(a[0])+'</div><div class="v">'+E(a[1])+'</div></div>';}).join("");
+})();
+
+/* ---------------- 4. PROMISE GAP (dumbbell) ---------------- */
+(function(){
+ var w=800,h=380,ml=140,mr=30,mt=26,mb=40;
+ var pw=w-ml-mr,ph=h-mt-mb;
+ var mn=0.70,mx=1.08,r=mx-mn;
+ function X(v){return ml+((v-mn)/r)*pw;}
+ var s=svgOpen(w,h);
+ for(var t=0.70;t<=1.081;t+=0.05){
+   s+=line(X(t),mt,X(t),mt+ph,"#EDF1F3",1)+txt(X(t),mt+ph+22,t.toFixed(2),{fs:12});}
+ s+=line(X(1.0),mt,X(1.0),mt+ph,"#B9C4C9",1.5);
+ var rows=[],i,j;
+ for(i=0;i<GAP.length;i++)for(j=0;j<3;j++)rows.push({c:GAP[i].c,rd:j+1,d:GAP[i].d[j],first:j===0});
+ var rh=ph/rows.length;
+ rows.forEach(function(o,k){
+  var y=mt+rh*(k+0.5), a=o.d[0], b=o.d[1], gap=b-a;
+  var col=Math.abs(gap)>0.06?"#8C2F39":"#2D6A4F";
+  if(o.first)s+=txt(ml-96,y+5,o.c,{a:"start",fs:13,w:700,f:"#23282B"});
+  s+=txt(ml-14,y+5,"R"+o.rd,{a:"end",fs:12.5});
+  s+=line(X(b),y,X(a),y,col,3.5);
+  s+='<circle cx="'+X(a)+'" cy="'+y+'" r="6" fill="#1F4E5F"/>';
+  s+='<circle cx="'+X(b)+'" cy="'+y+'" r="6" fill="'+col+'"/>';
+  s+=txt(X(b)-12,y+5,gap.toFixed(3),{a:"end",fs:11.5,f:col,w:700});
+ });
+ document.getElementById("gapChart").innerHTML=s+"</svg>";
+ var t2='<tr><th>Customer</th><th>R1 gap</th><th>R2 gap</th><th>R3 gap</th></tr>';
+ GAP.forEach(function(g){
+  t2+='<tr><td>'+E(g.c)+'</td>'+g.d.map(function(p){
+   var v=(p[1]-p[0]).toFixed(3);
+   return '<td class="'+(Math.abs(p[1]-p[0])>0.06?"no":"yes")+'">'+v+'</td>';}).join("")+'</tr>';
+ });
+ document.getElementById("gapTable").innerHTML=t2;
+})();
+
+/* ---------------- 5. ROUND SELECTOR ---------------- */
+(function(){
+ var tabs=document.getElementById("rTabs"),bodyEl=document.getElementById("rBody");
+ tabs.innerHTML=ROUNDS.map(function(r,i){
+  return '<button class="tab'+(i===2?' on':'')+'" data-i="'+i+'">'+E(r.t)+' — '+E(r.sub)+'</button>';}).join("");
+ function draw(i){
+  var r=ROUNDS[i];
+  var h='<div class="diag"><b>Diagnosis.</b> '+E(r.diag)+'</div><div class="grid4">';
+  r.f.forEach(function(f){
+   h+='<div class="fn"><h4>'+E(f[0])+'</h4><ul>'+f[1].map(function(x){return '<li>'+E(x)+'</li>';}).join("")+'</ul></div>';});
+  h+='</div><div class="stats" style="grid-template-columns:repeat(4,1fr)">'+
+   r.k.map(function(k){var p=k.split(" ");var lab=p.slice(0,-1).join(" ");var val=p[p.length-1];
+    return '<div class="stat"><div class="l">'+E(lab)+'</div><div class="v">'+E(val)+'</div></div>';}).join("")+
+   '</div><div class="note"><b>What the results revealed.</b> '+E(r.rev)+'</div>';
+  bodyEl.innerHTML=h;
+  Array.prototype.forEach.call(tabs.children,function(b,j){b.className="tab"+(j===i?" on":"");});
+ }
+ tabs.addEventListener("click",function(e){
+  var b=e.target.closest(".tab"); if(b)draw(+b.dataset.i);});
+ draw(2);
+})();
+
+/* ---------------- 6. WATERFALL ---------------- */
+(function(){
+ var w=820,h=380,ml=76,mr=20,mt=30,mb=84;
+ var pw=w-ml-mr,ph=h-mt-mb;
+ var mn=-520000,mx=260000,r=mx-mn;
+ function Y(v){return mt+ph-((v-mn)/r)*ph;}
+ var s=svgOpen(w,h);
+ for(var g=-500000;g<=250000;g+=125000){
+  s+=line(ml,Y(g),w-mr,Y(g),"#EDF1F3",1)+txt(ml-9,Y(g)+4,(g/1000)+"k",{a:"end",fs:11.5});}
+ s+=line(ml,Y(0),w-mr,Y(0),"#23282B",1.5);
+ var bw=pw/WF.length*0.62, run=0;
+ WF.forEach(function(o,i){
+  var cx=ml+pw/WF.length*(i+0.5),top,bot,col;
+  if(o.t){top=Y(Math.max(0,o.v));bot=Y(Math.min(0,o.v));col="#1F4E5F";run=o.v;}
+  else{var st=run;run=run+o.v;top=Y(Math.max(st,run));bot=Y(Math.min(st,run));
+       col=o.v>=0?"#2D6A4F":"#8C2F39";}
+  s+=rect(cx-bw/2,top,bw,Math.abs(bot-top),col,{rx:2});
+  var lv=(o.v>0&&!o.t?"+":"")+fmt(o.v);
+  s+=txt(cx,top-8,lv,{f:col,fs:11.5,w:700});
+  var words=o.l.split(" "),l1=words.slice(0,2).join(" "),l2=words.slice(2).join(" ");
+  s+=txt(cx,h-52,l1,{fs:11.5,f:"#23282B",w:600});
+  if(l2)s+=txt(cx,h-38,l2,{fs:11.5,f:"#23282B",w:600});
+ });
+ document.getElementById("wfChart").innerHTML=s+"</svg>";
+})();
+
+/* ---------------- 7. FUNCTION CHARTS ---------------- */
+function chartSup(){
+ var w=780,h=340,ml=118,mr=20,mt=30,mb=54,pw=w-ml-mr,ph=h-mt-mb;
+ function Y(v){return mt+ph-((v-50)/50)*ph;}
+ var s=svgOpen(w,h);
+ for(var g=50;g<=100;g+=10){s+=line(ml,Y(g),w-mr,Y(g),"#EDF1F3",1)+txt(ml-9,Y(g)+4,g+"%",{a:"end",fs:11.5});}
+ var gw=pw/SUP.length, bw=gw*0.17;
+ SUP.forEach(function(o,i){
+  var g0=ml+gw*i+gw*0.12;
+  s+=line(g0-2,Y(o.a),g0+bw*4+6,Y(o.a),"#1F4E5F",2)+
+     '<text x="'+(g0+bw*4+10)+'" y="'+(Y(o.a)+4)+'" font-size="10.5" fill="#1F4E5F" font-weight="700">agreed</text>';
+  o.r.forEach(function(v,j){
+   var x=g0+bw*j*1.15, col=v<o.a-3?"#8C2F39":"#2D6A4F";
+   s+=rect(x,Y(v),bw,mt+ph-Y(v),col,{rx:2});
+   s+=txt(x+bw/2,Y(v)-6,v.toFixed(1),{fs:10.5,f:col,w:700});
+   s+=txt(x+bw/2,mt+ph+16,"R"+(j+1),{fs:10.5});
+  });
+  s+=txt(g0+bw*1.8,h-22,o.s,{fs:12,w:700,f:"#23282B"});
+  s+=txt(g0+bw*1.8,h-8,"free capacity "+o.fc,{fs:10.5});
+ });
+ return s+"</svg>";
+}
+function chartOps(){
+ var w=760,h=320,ml=64,mr=64,mt=30,mb=52,pw=w-ml-mr,ph=h-mt-mb;
+ var ot=[11.5,10.9,2.7], fm=[65427,62048,15244];
+ function Y1(v){return mt+ph-(v/14)*ph;}
+ function Y2(v){return mt+ph-(v/70000)*ph;}
+ var s=svgOpen(w,h);
+ for(var g=0;g<=14;g+=3.5){s+=line(ml,Y1(g),w-mr,Y1(g),"#EDF1F3",1)+txt(ml-9,Y1(g)+4,g+"%",{a:"end",fs:11.5});}
+ var gw=pw/3,bw=gw*0.3;
+ ot.forEach(function(v,i){
+  var cx=ml+gw*(i+0.5);
+  s+=rect(cx-bw,Y1(v),bw,mt+ph-Y1(v),"#8C2F39",{rx:2});
+  s+=txt(cx-bw/2,Y1(v)-7,v+"%",{fs:12,f:"#8C2F39",w:700});
+  s+=txt(cx,h-18,"Round "+(i+1),{fs:12.5,w:600,f:"#23282B"});
+ });
+ var pts=fm.map(function(v,i){return (ml+gw*(i+0.5)+18)+","+Y2(v);}).join(" ");
+ s+='<polyline points="'+pts+'" fill="none" stroke="#1F4E5F" stroke-width="2.5"/>';
+ fm.forEach(function(v,i){
+  var cx=ml+gw*(i+0.5)+18;
+  s+='<circle cx="'+cx+'" cy="'+Y2(v)+'" r="4.5" fill="#1F4E5F"/>';
+  s+=txt(cx+6,Y2(v)-9,"€"+fmt(v),{fs:11,f:"#1F4E5F",w:700,a:"start"});
+ });
+ s+=txt(28,mt-10,"Overtime %",{a:"start",fs:11.5,f:"#8C2F39",w:700});
+ s+=txt(w-24,mt-10,"Flexible manpower €",{a:"end",fs:11.5,f:"#1F4E5F",w:700});
+ return s+"</svg>";
+}
+function chartStock(){
+ var w=760,h=320,ml=60,mr=112,mt=26,mb=48,pw=w-ml-mr,ph=h-mt-mb;
+ function Y(v){return mt+ph-((v-3)/5.5)*ph;}
+ function X(i){return ml+pw/3*i;}
+ var cols=["#1F4E5F","#8C2F39","#2D6A4F","#B07C1E","#6C4F87"];
+ var s=svgOpen(w,h);
+ for(var g=3;g<=8.5;g+=1.1){s+=line(ml,Y(g),ml+pw,Y(g),"#EDF1F3",1)+txt(ml-9,Y(g)+4,g.toFixed(1),{a:"end",fs:11.5});}
+ ["Round 0","Round 1","Round 2","Round 3"].forEach(function(l,i){s+=txt(X(i),h-20,l,{fs:12,w:600,f:"#23282B"});});
+ STOCK.forEach(function(o,k){
+  var pts=o.v.map(function(v,i){return X(i)+","+Y(v);}).join(" ");
+  s+='<polyline points="'+pts+'" fill="none" stroke="'+cols[k]+'" stroke-width="2.2"/>';
+  o.v.forEach(function(v,i){s+='<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="3.4" fill="'+cols[k]+'"/>';});
+  s+=txt(ml+pw+8,Y(o.v[3])+4,o.c,{a:"start",fs:11.5,f:cols[k],w:700});
+ });
+ s+=txt(14,mt-8,"Stock, weeks",{a:"start",fs:11.5,w:700,f:"#6B767C"});
+ return s+"</svg>";
+}
+function chartShelf(){
+ var w=740,h=320,ml=64,mr=64,mt=34,mb=50,pw=w-ml-mr,ph=h-mt-mb;
+ function Y1(v){return mt+ph-((v-70)/16)*ph;}
+ function Y2(v){return mt+ph-(v/14)*ph;}
+ var s=svgOpen(w,h);
+ for(var g=70;g<=86;g+=4){s+=line(ml,Y1(g),w-mr,Y1(g),"#EDF1F3",1)+txt(ml-9,Y1(g)+4,g+"%",{a:"end",fs:11.5});}
+ var gw=pw/3,bw=gw*0.3;
+ OBS.forEach(function(v,i){
+  var cx=ml+gw*(i+0.5);
+  s+=rect(cx+4,Y2(v),bw,mt+ph-Y2(v),"#D9B3B8",{rx:2});
+  s+=txt(cx+4+bw/2,Y2(v)-7,v+"%",{fs:12,f:"#8C2F39",w:700});
+  s+=txt(cx,h-18,"Round "+(i+1),{fs:12.5,w:600,f:"#23282B"});
+ });
+ var pts=SHELF.map(function(v,i){return (ml+gw*(i+0.5)-16)+","+Y1(v);}).join(" ");
+ s+='<polyline points="'+pts+'" fill="none" stroke="#1F4E5F" stroke-width="3"/>';
+ SHELF.forEach(function(v,i){
+  var cx=ml+gw*(i+0.5)-16;
+  s+='<circle cx="'+cx+'" cy="'+Y1(v)+'" r="5.5" fill="#1F4E5F"/>';
+  s+=txt(cx,Y1(v)-13,v+"%",{fs:12,f:"#1F4E5F",w:700});
+ });
+ s+=txt(20,mt-12,"Shelf-life promise",{a:"start",fs:11.5,f:"#1F4E5F",w:700});
+ s+=txt(w-20,mt-12,"Obsolescence",{a:"end",fs:11.5,f:"#8C2F39",w:700});
+ return s+"</svg>";
+}
+var CHARTS={sup:chartSup,ops:chartOps,stock:chartStock,shelf:chartShelf};
+
+(function(){
+ var tabs=document.getElementById("fTabs"),bodyEl=document.getElementById("fBody");
+ tabs.innerHTML=FUNCS.map(function(f,i){
+  return '<button class="tab'+(i===0?' on':'')+'" data-i="'+i+'">'+E(f.n)+'</button>';}).join("");
+ function draw(i){
+  var f=FUNCS[i];
+  var h='<div class="card"><table><tr><th>Decision</th><th>Round 1</th><th>Round 2</th><th>Round 3</th><th>Status</th></tr>';
+  f.rows.forEach(function(r){
+   var cls=r[4]==="lock"?' class="lock"':'';
+   var tag=r[4]==="lock"?'<span class="tag">not editable</span>':
+           (r[4]==="ch"?'<span class="tag ch">changed</span>':'<span class="tag">held</span>');
+   h+='<tr'+cls+'><td>'+E(r[0])+'</td><td>'+E(r[1])+'</td><td>'+E(r[2])+'</td><td>'+E(r[3])+'</td><td>'+tag+'</td></tr>';
+  });
+  h+='</table>'+(f.ord?'<p class="small">'+E(f.ord)+'</p>':'')+'</div>';
+  h+='<div class="card"><div class="chart">'+CHARTS[f.chart]()+'</div></div>';
+  h+='<div class="note">'+E(f.note)+'</div>';
+  bodyEl.innerHTML=h;
+  Array.prototype.forEach.call(tabs.children,function(b,j){b.className="tab"+(j===i?" on":"");});
+ }
+ tabs.addEventListener("click",function(e){var b=e.target.closest(".tab");if(b)draw(+b.dataset.i);});
+ draw(0);
+})();
+
+/* ---------------- 8. KPI TABLES ---------------- */
+(function(){
+ var rows=[
+  ["ROI","Positive, better than R0 (−7.68%)",["−13.61%",0],["−11.59%",0],["+3.64%",1]],
+  ["Gross margin (customer)","Better than R0 (€903,148)",["€755,006",0],["€700,701",0],["€1,288,377",1]],
+  ["Obsolete products","Below R0 (8.1%)",["7.8%",1],["11.1%",0],["3.4%",1]],
+  ["Service level, order lines","Contracted 94–95%",["90.3%",0],["89.2%",0],["94.4%",1]]
+ ];
+ var h='<tr><th>KPI</th><th>Reference standard</th><th>Round 1</th><th>Round 2</th><th>Round 3</th></tr>';
+ rows.forEach(function(r){
+  h+='<tr><td><strong>'+E(r[0])+'</strong></td><td style="text-align:left">'+E(r[1])+'</td>';
+  for(var i=2;i<5;i++){var c=r[i];
+   h+='<td class="'+(c[1]?"yes":"no")+'">'+E(c[0])+' '+(c[1]?"✓":"✗")+'</td>';}
+  h+='</tr>';
+ });
+ document.getElementById("kpiTable").innerHTML=h;
+
+ var f=[
+  ["Purchasing","Weighted contract index (lower better)","0.9678","0.9867","0.9867","Moved against us by design, to buy reliability"],
+  ["Operations","Production + space + handling, % of revenue","50.3%","42.7%","33.4%","Strongly improved"],
+  ["Sales","Contracted sales revenue","€2,625,283","€2,707,995","€2,639,411","Flat across all rounds"],
+  ["Supply Chain","Stock investment value (lower better)","€367,821","€267,298","€287,101","Improved, then modestly rebuilt"]
+ ];
+ var h2='<tr><th>Function</th><th>Score basis</th><th>R1</th><th>R2</th><th>R3</th><th>Direction</th></tr>';
+ f.forEach(function(r){
+  h2+='<tr><td><strong>'+E(r[0])+'</strong></td><td style="text-align:left">'+E(r[1])+
+   '</td><td>'+E(r[2])+'</td><td>'+E(r[3])+'</td><td>'+E(r[4])+
+   '</td><td style="text-align:left">'+E(r[5])+'</td></tr>';
+ });
+ document.getElementById("fnTable").innerHTML=h2;
+})();
+
+/* ---------------- 9. NEXT ROUND ---------------- */
+(function(){
+ document.getElementById("helpCards").innerHTML=HELP.map(function(o){
+  return '<div class="fn"><h4>'+E(o[0])+' will help by</h4><ul>'+
+   o[1].map(function(x){return '<li>'+E(x)+'</li>';}).join("")+'</ul></div>';}).join("");
+ var t=[["ROI","+3.64%","+6% to +8%"],["Contract penalties","€48,884","Below €50,000"],
+  ["Obsolete products","3.4%","Below 3.5%"],["Service level, order lines","94.4%","Above 95%"],
+  ["Contracted sales revenue","€2,639,411","Above €2,700,000"],
+  ["Stock costs","€286,649","Below €260,000"]];
+ var h='<tr><th>Measure</th><th>Round 3 actual</th><th>Round 4 target</th></tr>';
+ t.forEach(function(r){h+='<tr><td>'+E(r[0])+'</td><td>'+E(r[1])+'</td><td><strong>'+E(r[2])+'</strong></td></tr>';});
+ document.getElementById("tgtTable").innerHTML=h;
+})();
+
+/* ---------------- NAV: keys + scrollspy ---------------- */
+(function(){
+ var links=Array.prototype.slice.call(document.querySelectorAll("nav a"));
+ document.addEventListener("keydown",function(e){
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  var t=(e.target.tagName||"").toLowerCase();
+  if(t==="input"||t==="textarea")return;
+  var i=parseInt(e.key,10);
+  if(i>=1&&i<=9){
+   var el=document.getElementById("m"+i);
+   if(el){el.scrollIntoView({behavior:"smooth",block:"start"});}
+  }
+ });
+ function spy(){
+  var y=window.scrollY+120,cur=links[0];
+  links.forEach(function(a){
+   var el=document.getElementById(a.getAttribute("href").slice(1));
+   if(el&&el.offsetTop<=y)cur=a;
+  });
+  links.forEach(function(a){a.className=(a===cur)?"on":"";});
+ }
+ window.addEventListener("scroll",spy,{passive:true});spy();
+})();
+</script>
+</body>
+</html>
