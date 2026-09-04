@@ -1357,7 +1357,6 @@ function v6(){
     return h+'</tbody></table></div>';
   })();
 
-  const mape=PRODUCTS.map(p=>at("products",p,"Forecast error (MAPE)",ROUND));
 
   return [
     card("s12","A promise is an option we have written","For every percentage point of service level, the penalty for falling short is roughly five times the bonus for exceeding.",
@@ -1380,11 +1379,29 @@ function v6(){
       '<div class="callout">The contracted indices are the exact output of the contract index model applied to the Round 6 configuration, which makes this a validation rather than just a result. Net penalty '+
       eur(F.bonusPenalty[6])+' on '+eur(F.realizedRevenue[6])+' of revenue.</div>'),
 
-    card("s6","Forecast error by product, Round "+ROUND,"The one functional KPI never treated as a lever.",
-      barChart(mape,PRODUCTS.map(p=>p.replace("Fressie Orange","FO").replace(" 1 liter"," 1L")),
-        {fmt:v=>pct(v,1),height:300,title:"Forecast error by product"})+
-      '<div class="callout">MAPE stayed between '+pct(Math.min.apply(null,mape),2)+' and '+pct(Math.max.apply(null,mape),2)+
-      ' for all seven rounds and never improved.</div>'),
+    card("s12","Sales KPIs by product, Round "+ROUND,"The four KPIs Sales is accountable for, side by side. Sortable.",
+      makeTable(["Product","Service level","On-shelf availability","Attained shelf life","Obsolescence","Forecast error"],
+        PRODUCTS.map(p=>{
+          const sl=at("products",p,"Service level (order lines)");
+          const osa=at("products",p,"OSA");
+          const ob=at("products",p,"Obsoletes (%)");
+          const mp=at("products",p,"Forecast error (MAPE)");
+          let n=0,w=0;
+          CUSTOMERS.forEach(c=>{
+            const k=c+" | "+p;
+            const dm=at("customerProduct",k,"Demand per week (units)");
+            const sh=at("customerProduct",k,"Attained shelf life (%)");
+            if(dm&&sh!==null&&sh!==undefined){ n+=dm*sh; w+=dm; }
+          });
+          const shelf=w?n/w:null;
+          return [{t:p.replace("Fressie ",""),v:p},
+                  {t:pct(sl,2),v:sl,cls:sl>=0.96?"cell-good":""},
+                  {t:pct(osa,2),v:osa},
+                  {t:pct(shelf,2),v:shelf,cls:"cell-good"},
+                  {t:pct(ob,2),v:ob,cls:ob>0.05?"cell-bad":""},
+                  {t:pct(mp,2),v:mp,cls:mp>0.55?"cell-bad":""}];
+        }),{sortable:true})+
+      '<div class="callout">Sort by any column and the same two products come to the top: both C-power lines carry the highest obsolescence, the highest forecast error and the lowest service. They are the smallest volumes in the range, which is why they are the hardest to forecast and the quickest to age. Shelf life is the one promise we clear comfortably everywhere, at about 86% delivered against 75% promised.</div>'),
 
     card("s6","The Round 2 shelf-life lesson","What happened the one round the promise was raised.",
       barChart(DATA.cumulativeServiceLevel.obsolescence,R_LABELS,
@@ -1400,7 +1417,7 @@ function v6(){
       lineChart([{name:"Obsolescence",values:DATA.cumulativeServiceLevel.obsolescence,color:"#EF4444"}],
         R_LABELS,{fmt:v=>pct(v,1),labelPoints:true,height:250,forceLegend:true,title:"Product obsolescence"})),
 
-    imgTile("s6","retail","On-shelf availability is what the customer actually sees.")+
+    imgTile("s12 img-band","retail","On-shelf availability is what the customer actually sees.")+
     card("s12","Service level by customer and product, Round "+ROUND,"Green at or above 96%, amber 95 to 96%, red below 95%.",heat)
   ].join("");
 }
