@@ -28,6 +28,10 @@
   --fs-base:17px;
 }
 *{box-sizing:border-box}
+/* scrollbars stay functional but are not drawn */
+html,body,.sidebar,.tbl-wrap,.view,.main{scrollbar-width:none; -ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,.sidebar::-webkit-scrollbar,
+.tbl-wrap::-webkit-scrollbar,.view::-webkit-scrollbar,.main::-webkit-scrollbar{width:0; height:0; display:none}
 html,body{margin:0;padding:0}
 body{
   font-family:var(--sans); font-size:var(--fs-base); line-height:1.5;
@@ -190,6 +194,12 @@ tbody tr:last-child{border-bottom:0}
 tbody tr:hover{background:var(--cream-warm)}
 tbody td:first-child{font-weight:700}
 td.num{font-variant-numeric:tabular-nums}
+.row-off td{color:#9AA0A8; font-weight:500}
+.row-off td:first-child{color:#8A9099; font-weight:600}
+.row-off:hover{background:#FAFAFA}
+.tag-off{display:inline-block; margin-left:9px; font-size:.72rem; font-weight:700; letter-spacing:.02em;
+  color:#8A9099; background:#F1F1F3; border-radius:999px; padding:2px 9px; white-space:nowrap}
+.bar-fill.off{background:#D5D7DB}
 .cell-good{color:var(--good); font-weight:800}
 .cell-bad{color:var(--bad); font-weight:800}
 tr.total-row{background:var(--cream-warm); font-weight:800}
@@ -1017,19 +1027,23 @@ function v2(){
 function v3(){
   const rows=SUPPLIERS.map(s=>{
     const active=[]; for(let r=0;r<=6;r++) if(supplierActive(s,r)) active.push("R"+r);
-    const r = supplierActive(s,ROUND)?ROUND:(function(){ for(let i=6;i>=0;i--) if(supplierActive(s,i)) return i; return 6; })();
+    const here=supplierActive(s,ROUND);
+    const r = here?ROUND:(function(){ for(let i=6;i>=0;i--) if(supplierActive(s,i)) return i; return 6; })();
     const pv=series("suppliers",s,"Purchase  value previous round")[r]||0;
     const tr=series("suppliers",s,"Transport costs previous round")[r]||0;
     const rl=series("suppliers",s,"Delivery reliability (%)")[r];
     const rj=series("suppliers",s,"Rejection  (%)")[r];
-    return [{t:s,v:s},
-      {t:pct(rl),v:rl,cls:rl>=0.95?"cell-good":"cell-bad",
-       html:pct(rl)+progress(rl,rl>=0.95?"good":"bad")},
-      {t:pct(rj),v:rj,cls:rj<=0.03?"cell-good":""},
+    const name = here ? esc(s)
+      : esc(s)+'<span class="tag-off">not under contract in R'+ROUND+'</span>';
+    return {cls: here?"":"row-off", cells:[
+      {t:s,v:s,html:name},
+      {t:pct(rl),v:rl,cls:here?(rl>=0.95?"cell-good":"cell-bad"):"",
+       html:pct(rl)+progress(rl,here?(rl>=0.95?"good":"bad"):"off")},
+      {t:pct(rj),v:rj,cls:here&&rj<=0.03?"cell-good":""},
       {t:eur(pv),v:pv},{t:eur(tr),v:tr},
       {t:pct(tr/(pv+tr),1),v:tr/(pv+tr)},
       {t:eur(pv+tr),v:pv+tr},
-      {t:active.join(", "),v:""}];
+      {t:active.join(", "),v:""}]};
   });
   const impact=SUPPLIERS.filter(s=>supplierActive(s,ROUND)).map(s=>({
     label:s, value:landed(s,ROUND)*0.01/F.investment[ROUND]*100
@@ -1038,7 +1052,7 @@ function v3(){
   const relSeries=SUPPLIERS.map((s,i)=>({name:s,values:series("suppliers",s,"Delivery reliability (%)"),color:PALETTE[i%PALETTE.length]}));
 
   return [
-    card("s12","Supplier scorecard","Showing each supplier at the selected round, or at its last active round if it was replaced. Click any column heading to sort.",
+    card("s12","Supplier scorecard","Suppliers not under contract in the selected round are greyed out and show their last active round instead. Click any column heading to sort.",
       makeTable(["Supplier","Delivery reliability","Rejection","Purchase value","Transport","Transport share","Landed cost","Rounds active"],rows,{sortable:true})),
 
     card("s6","Contract index is not cost. Landed cost is cost.","Trio PET's basic index was 0.95 against Philyp Jones' 1.01, but Trio's transport rates were 1.5 times higher.",
