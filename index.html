@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Fresh Connection — Not Fast, Just Furious</title>
+<title>The Fresh Connection: Not Fast, Just Furious</title>
 <style>
 /* ============================================================
    Design tokens. Restyle the whole dashboard from this block.
@@ -393,7 +393,7 @@ function runChecks(){
     eq(on/od, DATA.cumulativeServiceLevel.obsolescence[r], 0.0002, "Round "+r+": headline obsolescence does not match product weighting");
   }
   const el=document.getElementById("dq");
-  if(fails.length) el.innerHTML='<div class="dq-fail">Data check failed — '+fails.length+
+  if(fails.length) el.innerHTML='<div class="dq-fail">Data check failed: '+fails.length+
     ' issue(s). Figures below may be wrong.<br>'+fails.map(esc).join("<br>")+'</div>';
   return fails;
 }
@@ -742,7 +742,7 @@ function statusPill(s){
    ============================================================ */
 const VIEWS=[
  {id:"overview", roundAware:false, title:"Overview and ROI",
-  sub:"Six rounds, one fixed market. Contracted revenue never moved more than 3.4% — every euro of improvement came from execution.", build:v1},
+  sub:"Six rounds, one fixed market. Contracted revenue never moved more than 3.4%. Every euro of improvement came from execution.", build:v1},
  {id:"targets", roundAware:false, title:"Targets versus achieved",
   sub:"What each function set out to achieve, what actually happened, and why the gaps opened.", build:v2},
  {id:"purchasing", roundAware:true, title:"Purchasing and suppliers",
@@ -799,7 +799,7 @@ function v1(){
     return items;
   })();
   const tl=[
-    [0,"Inherited starting position — the operation as we received it.",F.roi[0],true],
+    [0,"The inherited starting position, before any decision of ours.",F.roi[0],true],
     [1,"Cost leadership on the buy side and responsiveness on the sell side, at the same time.",F.roi[1]],
     [2,"Supply side repaired, but the shelf-life promise was raised as stock cover was cut.",F.roi[2]],
     [3,"Shelf life pulled back, line speed bought. First profitable round.",F.roi[3]],
@@ -809,7 +809,7 @@ function v1(){
   ];
   return [
     card("hero s5","", "", '<div class="quote">Reliability is our product. We compete by making certainty more valuable than speed.</div>'+
-      '<div class="quote-sub">Demand was fixed for all seven rounds. There was never a volume lever — execution was the only game.</div>'),
+      '<div class="quote-sub">Demand was fixed for all seven rounds. There was never a volume lever, so execution was the only game.</div>'),
     card("s7","Return on investment, Rounds 0 to 6","Round 0 is the inherited starting position, not a team decision.",
       lineChart([{name:"ROI",values:F.roi,color:"#EA580C"}],R_LABELS,
         {fmt:v=>pct(v,2),zeroLine:true,labelPoints:true,height:330,title:"ROI by round"})+
@@ -829,7 +829,7 @@ function v1(){
 
     card("s6","Bonus and penalties by round","Contract penalties for undershooting the promise; a bonus for exceeding it.",
       barChart(F.bonusPenalty,R_LABELS,{fmt:v=>eur(v),diverging:true,height:365,padB:80,title:"Bonus and penalties by round"})+
-      '<div class="callout">Round 5 is the only positive bar in the game. Round 6 closed at '+eur(F.bonusPenalty[6])+' on '+eur(F.realizedRevenue[6])+' of revenue — effectively break-even against the promise.</div>'),
+      '<div class="callout">Round 5 is the only positive bar in the game. Round 6 closed at '+eur(F.bonusPenalty[6])+' on '+eur(F.realizedRevenue[6])+' of revenue, effectively break-even against the promise.</div>'),
 
     card("s12","Operating profit bridge, Round 1 to Round 6","Where "+eur(F.operatingProfit[6]-F.operatingProfit[1])+" of improvement came from. Cost reductions are shown as positive contributions.",
       waterfall(bridge,{height:380,title:"Operating profit bridge"})+
@@ -853,7 +853,7 @@ function v2(){
       ["Component rejection, PET","Below 3%",pct(at("components","PET","Rejection (%)",6)),"met"],
       ["Component obsolescence","0%","0% on every component, every round","met"],
       ["Raw material cost as % of realized revenue","Below 32%",pct(rmPct[6]),"met"]
-    ],"Agreed reliability is a contractual promise, not a delivered outcome — suppliers underdelivered against their own agreed level in every round. The response was to stop treating the agreed figure as plannable and absorb the variance with safety stock and supplier selection instead."],
+    ],"Agreed reliability is a contractual promise, not a delivered outcome. Suppliers underdelivered against their own agreed level in every round. The response was to stop treating the agreed figure as plannable and absorb the variance with safety stock and supplier selection instead."],
     ["Operations",[
       ["Inbound warehouse cube utilization","Below 100%, no overflow",
        pct(at("warehouses","Raw materials warehouse","Cube utilization (%)",6))+", overflow "+pct(at("warehouses","Raw materials warehouse","Overflow (%)",6)),"partial"],
@@ -925,7 +925,7 @@ function v3(){
     card("s12","Supplier scorecard","Showing each supplier at the selected round, or at its last active round if it was replaced. Click any column heading to sort.",
       makeTable(["Supplier","Delivery reliability","Rejection","Purchase value","Transport","Transport share","Landed cost","Rounds active"],rows,{sortable:true})),
 
-    card("s6","Contract index is not cost — landed cost is cost","Trio PET's basic index was 0.95 against Philyp Jones' 1.01, but Trio's transport rates were 1.5 times higher.",
+    card("s6","Contract index is not cost. Landed cost is cost.","Trio PET's basic index was 0.95 against Philyp Jones' 1.01, but Trio's transport rates were 1.5 times higher.",
       stackedBar([
         {name:"Purchase value",values:[294655.22,254997.86],color:"#FDBA74"},
         {name:"Transport costs",values:[139591.23,92448.53],color:"#C2410C"}
@@ -950,7 +950,7 @@ function v3(){
     card("s4","Supplier impact on ROI","ROI basis points gained from a 1% reduction in that supplier's landed cost. Suppliers under contract in Round "+ROUND+".",
       hBarChart(impact.map(i=>({label:i.label.split(" ")[0]+" "+(i.label.split(" ")[1]||""),value:i.value})),
         {fmt:v=>num(v,3)+" bps",labelWidth:250,title:"Supplier ROI leverage"})+
-      '<div class="callout">Miami Oranges is by far the largest lever — it is over 45% of purchase value. Vitamin C is the smallest, which is exactly why its constraint stayed hidden for four rounds.</div>')
+      '<div class="callout">Miami Oranges is by far the largest lever, at over 45% of purchase value. Vitamin C is the smallest, which is exactly why its constraint stayed hidden for four rounds.</div>')
   ].join("");
 }
 
@@ -966,7 +966,7 @@ function v4(){
   const opCard=(title,rows,total)=> card("s3",title,"",
     rows.map(x=>kv(x[0],x[1],x[2])).join("")+
     '<div class="callout" style="margin-top:12px">Controllable cost this round <strong>'+eur(total)+
-    '</strong> — '+num(total/F.investment[r]*100,2)+'% of total investment, '+
+    '</strong>, '+num(total/F.investment[r]*100,2)+'% of total investment and '+
     num(total/F.cogs[r]*100,1)+'% of COGS</div>');
 
   const peakVals=[null,null,859,859,859,null,null];
@@ -1112,14 +1112,14 @@ function v5(){
   return [
     card("s5","The Vitamin C diagnosis","0.16% of purchase value. It was gating a third of the product range.",
       '<div class="grid2">'+
-      '<div class="mini"><h4>Round 4 — Seitan Vitamins</h4>'+
+      '<div class="mini"><h4>Round 4, with Seitan Vitamins</h4>'+
         kv("Country / lead time","China · 60 days")+
         kv("Component availability",pct(at("components",vc,"Component availability (%)",4),2),"cell-bad")+
         kv("Economic inventory",num(at("components",vc,"Economic inventory (weeks)",4),2)+" weeks","cell-bad")+
         kv("C-power PET service",pct(at("products","Fressie Orange/C-power PET","Service level (order lines)",4),2),"cell-bad")+
         kv("C-power 1L service",pct(at("products","Fressie Orange/C-power 1 liter","Service level (order lines)",4),2),"cell-bad")+
       '</div>'+
-      '<div class="mini"><h4>Round 6 — SYI</h4>'+
+      '<div class="mini"><h4>Round 6, with SYI</h4>'+
         kv("Country / lead time","Netherlands · 4 days")+
         kv("Component availability",pct(at("components",vc,"Component availability (%)",6),2),"cell-good")+
         kv("Economic inventory",num(at("components",vc,"Economic inventory (weeks)",6),2)+" weeks","cell-good")+
@@ -1128,7 +1128,7 @@ function v5(){
       '</div></div>'+
       '<div class="callout">Every other component was above 99% while Vitamin C sat at '+
       pct(at("components",vc,"Component availability (%)",4),2)+', and the two C-power products were the only ones below 91% service. '+
-      'SYI was both faster and cheaper on landed cost — the same lesson as the PET switch, found independently.</div>'),
+      'SYI was both faster and cheaper on landed cost, which is the same lesson as the PET switch, found independently.</div>'),
 
     card("s7","Component availability across rounds","",
       lineChart(avail,R_LABELS,{fmt:v=>pct(v,1),refLine:0.99,refLabel:"99%",height:340,title:"Component availability"})+
@@ -1234,7 +1234,7 @@ function v6(){
       ],{fmt:v=>eur(v),labelWidth:280,title:"Cost per unserved order line"})+
       '<div class="callout">Priority order adopted in Round 5: Food & Groceries, then Dominick\u2019s, then LAND Market. One of three changes that turned penalties into a bonus.</div>'),
 
-    card("s12","Contracted versus attained index, Round 6","Fixed to Round 6 — this validates the contract index model against the final configuration, so it does not follow the round selector.",
+    card("s12","Contracted versus attained index, Round 6","Fixed to Round 6. This validates the contract index model against the final configuration, so it does not follow the round selector.",
       makeTable(["Customer","Contracted","Attained","Difference","Euro effect"],idxRows)+
       '<div class="callout">The contracted indices are the exact output of the contract index model applied to the Round 6 configuration, which makes this a validation rather than just a result. Net penalty '+
       eur(F.bonusPenalty[6])+' on '+eur(F.realizedRevenue[6])+' of revenue.</div>'),
@@ -1248,12 +1248,12 @@ function v6(){
     card("s6","The Round 2 shelf-life lesson","What happened the one round the promise was raised.",
       barChart(DATA.cumulativeServiceLevel.obsolescence,R_LABELS,
         {fmt:v=>pct(v,2),height:300,highlight:2,title:"Product obsolescence by round"})+
-      '<div class="chart-caption">Shelf life promised — R0 75%, R1 75%, <strong>R2 80%</strong>, R3 75%, R4 75%, R5 75%, R6 75%. The single round the promise was raised is the single worst round for obsolescence.</div>'+
+      '<div class="chart-caption">Shelf life promised: R0 75%, R1 75%, <strong>R2 80%</strong>, R3 75%, R4 75%, R5 75%, R6 75%. The single round the promise was raised is the single worst round for obsolescence.</div>'+
       '<div class="callout">The promise was raised in the same round finished-goods safety stock was cut by a third. Obsolescence reached '+
       pct(DATA.cumulativeServiceLevel.obsolescence[2])+' and penalties '+eur(Math.abs(F.bonusPenalty[2]))+
       ', the worst round of the game. The results revealed that shelf life and stock cover are the same decision.</div>'),
 
-    card("s6","Service level and obsolescence","Plotted separately — the two run on very different ranges.",
+    card("s6","Service level and obsolescence","Plotted separately, because the two run on very different ranges.",
       lineChart([{name:"Service level achieved",values:DATA.cumulativeServiceLevel.serviceLevel,color:"#EA580C"}],
         R_LABELS,{fmt:v=>pct(v,1),labelPoints:true,height:250,forceLegend:true,title:"Service level achieved"})+
       lineChart([{name:"Obsolescence",values:DATA.cumulativeServiceLevel.obsolescence,color:"#EF4444"}],
@@ -1279,14 +1279,14 @@ function v7(){
     modelCard("Contract index model",
       "contract index = example configuration index + Σ deltas for chosen options",
       '<p class="lede">Validated against all five Round 4 and Round 5 purchasing decisions and all three sales contracts. Every one matched exactly.</p>'+
-      '<div class="callout">Worked example — Philyp Jones\u2019 example index is 1.027 for High quality, 4-week payment, pallet layer, 4-hour window. The configuration actually chosen (High, 4 weeks, FTL, 1 day) gives 1.027 − 0.008 − 0.003 = <strong>1.016</strong>.</div>'),
+      '<div class="callout">Worked example: Philyp Jones\u2019 example index is 1.027 for High quality, 4-week payment, pallet layer, 4-hour window. The configuration actually chosen (High, 4 weeks, FTL, 1 day) gives 1.027 − 0.008 − 0.003 = <strong>1.016</strong>.</div>'),
 
     modelCard("Penalty and bonus model",
       "realized revenue = base revenue × attained contract index\nattained index   = contracted index − penalty rate × (promised SL − actual SL)   if actual < promised\n                 = contracted index + bonus rate   × (actual SL − promised SL)   if actual > promised",
       makeTable(["Customer","Penalty rate","Bonus rate","Table reward rate"],
         CUSTOMERS.map(c=>[{t:c},{t:num(m.penaltyBonus[c].penaltyRate,4)},
           {t:num(m.penaltyBonus[c].bonusRate,5)},{t:num(m.penaltyBonus[c].tableRewardRate,3)}]))+
-      '<div class="callout">Validation: predicted Food &amp; Groceries Round 4 penalty €46,846 against an actual €46,813 — an error of 0.07%. This is the single most important finding of the game.</div>',"s12"),
+      '<div class="callout">Validation: predicted Food &amp; Groceries Round 4 penalty €46,846 against an actual €46,813, an error of 0.07%. This is the single most important finding of the game.</div>',"s12"),
 
     modelCard("Payment terms investment model",
       "payment terms investment = receivables − payables\nreceivables = customer payment weeks ÷ 26 × realized revenue\npayables    = weighted supplier payment weeks ÷ 26 × purchase value",
@@ -1294,7 +1294,7 @@ function v7(){
       '<div class="callout">Validation: predicted €385,887 against an actual €384,555.</div>'),
 
     card("s6","Structural facts the models rest on","",
-      kv("Length of a round","26 weeks, not 24 — all five components reconcile at 26.0")+
+      kv("Length of a round","26 weeks, not 24; all five components reconcile at 26.0")+
       kv("Cost of one FTE","€40,000 a year, so €20,000 per round")+
       kv("Warehouse space","€100 per pallet location per round")+
       kv("Pallet capacity, 1-litre products","600 units")+
@@ -1303,10 +1303,10 @@ function v7(){
       kv("Tank yard","Orange and Mango are stored there, not in the pallet warehouse")+
       kv("ROI sensitivity","€1,000 of profit ≈ 16.5 × €1,000 of investment reduction")),
 
-    card("dark s6","Two places we overrode the model — and were right","",
+    card("dark s6","Two places we overrode the model, and were right","",
       '<div class="mini" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff">'+
       '<h4>Warehouse sizing</h4><p style="color:rgba(255,255,255,.82);font-size:.92rem;margin:0">'+
-      'The first model sized warehouses on average usage. A challenge raised inside the team — <em>you said overflow came from downsizing, but you\u2019re recommending further downsizing</em> — exposed that overflow is a peak event. Rebuilding on peaks reproduced every historical round exactly and moved the recommendation from 700 to 800 pallet locations. The original number would have overflowed badly.</p></div>'+
+      'The first model sized warehouses on average usage. Someone in the team asked why, if overflow came from downsizing, the recommendation was to downsize further. That question exposed the real mechanism: overflow is a peak event. Rebuilding on peaks reproduced every historical round exactly and moved the recommendation from 700 to 800 pallet locations. The original number would have overflowed badly.</p></div>'+
       '<div class="mini" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:#fff;margin-top:14px">'+
       '<h4>The 96% service promise</h4><p style="color:rgba(255,255,255,.82);font-size:.92rem;margin:0">'+
       'The model recommended holding at 95%, because the five-to-one penalty asymmetry makes raising a promise a poor bet when protecting a lead. The team raised it to 96% anyway, judging that the operation could deliver. It landed at exactly 96.00%, adding €30,665 of contracted revenue for a €456 penalty.</p></div>'+
@@ -1328,7 +1328,7 @@ function v8(){
      "The Round 4 downsizing to 850 pallet locations produced 3.00% overflow, roughly €9,450 including the labour knock-on, against €10,000 of pallet-location savings. Close to a wash, and avoidable."],
     ["Diagnose availability bottom-up from the start",
      "4 rounds",
-     "The Vitamin C constraint sat unaddressed for four rounds and was worth roughly six percentage points of service on two products. It was found in Round 5 by ranking components by availability rather than by spend — a five-minute analysis that could have been done in Round 1."],
+     "The Vitamin C constraint sat unaddressed for four rounds and was worth roughly six percentage points of service on two products. It was found in Round 5 by ranking components by availability rather than by spend, a five-minute analysis that could have been done in Round 1."],
     ["Treat forecast error as a lever",
      "47% – 61%",
      "MAPE never moved across seven rounds. Every point of forecast error is absorbed by safety stock, which is stock cost and stock investment, and both sit directly in ROI."]
@@ -1370,7 +1370,7 @@ function go(i){
 }
 function initRoundPicker(){
   const sel=document.getElementById("round-select");
-  sel.innerHTML=[0,1,2,3,4,5,6].map(r=>'<option value="'+r+'"'+(r===6?" selected":"")+'>Round '+r+(r===0?" (inherited)":"")+(r===6?" — final":"")+'</option>').join("");
+  sel.innerHTML=[0,1,2,3,4,5,6].map(r=>'<option value="'+r+'"'+(r===6?" selected":"")+'>Round '+r+(r===0?" (inherited)":"")+(r===6?" (final)":"")+'</option>').join("");
   sel.onchange=()=>{ ROUND=+sel.value; document.getElementById("sf-roi").textContent=pct(F.roi[ROUND]); go(current); };
 }
 document.addEventListener("keydown",e=>{
