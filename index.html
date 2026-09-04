@@ -844,6 +844,49 @@ function v1(){
 }
 
 /* ---------- View 2 ---------- */
+const R16 = ["R1","R2","R3","R4","R5","R6"];
+const slice16 = a => a.slice(1,7);
+const worstOf = (section, keys, metric) =>
+  [1,2,3,4,5,6].map(r => Math.min.apply(null, keys.map(k => series(section,k,metric)[r])));
+const flat = v => [v,v,v,v,v,v];
+
+function targetsTrend(which){
+  if(which==="Purchasing"){
+    return lineChart([
+      {name:"Worst supplier delivery reliability",values:worstOf("components",COMPONENTS,"Delivery reliability (%)"),color:"#EA580C"},
+      {name:"Target: 95% agreed",values:flat(0.95),color:"#EA580C",dashed:true},
+      {name:"Raw material cost as % of revenue",values:slice16(rmPct),color:"#2563EB"},
+      {name:"Target: below 32%",values:flat(0.32),color:"#2563EB",dashed:true}
+    ],R16,{fmt:v=>pct(v,0),height:290,title:"Purchasing KPIs against target"})+
+    '<div class="chart-caption">Reliability is the worst of the five suppliers in each round, because the target was a floor that had to hold across all of them. Round 1 at '+
+    pct(worstOf("components",COMPONENTS,"Delivery reliability (%)")[0],2)+' is why this target reads as missed.</div>';
+  }
+  if(which==="Operations"){
+    return lineChart([
+      {name:"Inbound warehouse overflow",values:slice16(series("warehouses","Raw materials warehouse","Overflow (%)")),color:"#EA580C"},
+      {name:"Outbound warehouse overflow",values:slice16(series("warehouses","Finished goods warehouse","Overflow (%)")),color:"#2563EB"},
+      {name:"Target: no overflow",values:flat(0),color:"#15803D",dashed:true}
+    ],R16,{fmt:v=>pct(v,0),height:290,title:"Warehouse overflow against target"})+
+    '<div class="chart-caption">Overflow is the KPI behind the partial verdict. Round 1 ran at '+
+    pct(series("warehouses","Raw materials warehouse","Overflow (%)")[1],2)+' inbound; the Round 4 rise to '+
+    pct(series("warehouses","Raw materials warehouse","Overflow (%)")[4],2)+' is the downsizing to 850 pallet locations.</div>';
+  }
+  if(which==="Supply chain"){
+    return lineChart([
+      {name:"Worst component availability",values:worstOf("components",COMPONENTS,"Component availability (%)"),color:"#EA580C"},
+      {name:"Target: above 99%",values:flat(0.99),color:"#EA580C",dashed:true},
+      {name:"Worst product on-shelf availability",values:worstOf("products",PRODUCTS,"OSA"),color:"#2563EB"},
+      {name:"Target: above 95%",values:flat(0.95),color:"#2563EB",dashed:true}
+    ],R16,{fmt:v=>pct(v,0),height:290,title:"Availability against target"})+
+    '<div class="chart-caption">Both lines are the worst performer of the five components and six products in each round. Component availability crosses its target in Round 6; product on-shelf availability flattens at exactly 90.00%, which is the contractual ceiling rather than a supply failure.</div>';
+  }
+  return lineChart([
+    {name:"Service level achieved",values:slice16(DATA.cumulativeServiceLevel.serviceLevel),color:"#EA580C"},
+    {name:"Service level promised",values:slice16(promisedWeighted()),color:"#2563EB",dashed:true}
+  ],R16,{fmt:v=>pct(v,1),height:290,title:"Service level against the promise"})+
+  '<div class="chart-caption">The promise is drawn as a step because it moved: 94.62% in Round 1, then 95%, then 96% in Round 6. The two lines meet exactly in Round 6, which is what "met" means here.</div>';
+}
+
 function v2(){
   const rel = c => pct(at("components",c,"Delivery reliability (%)",6),2);
   const blocks=[
@@ -884,8 +927,10 @@ function v2(){
     ],"With demand fixed and no promotional lever available, the team judged forecast error to be structural to the simulation rather than controllable, and prioritised availability and service instead. With hindsight this was the one functional KPI left entirely untouched across six rounds."]
   ];
   return card("s12","How to read this view","",
-    '<p class="lede">These targets were the levels the team\u2019s decisions were set to achieve in each round, reconstructed from the decision record, rather than numbers written down in advance. All actuals are Round 6.</p>')
+    '<p class="lede">These targets were the levels the team\u2019s decisions were set to achieve in each round, reconstructed from the decision record, rather than numbers written down in advance. The chart in each block tracks Rounds 1 to 6; the target, actual and verdict beneath it are Round 6. Round 0 is excluded because it was inherited.</p>')
   + blocks.map(b=> card("s6",b[0],"",
+      targetsTrend(b[0])+
+      '<div style="height:18px"></div>'+
       b[1].map(r=>
         '<div class="mini" style="margin-bottom:11px">'+
           '<div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:8px">'+
