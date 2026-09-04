@@ -95,7 +95,7 @@ nav{display:flex; flex-direction:column; gap:5px}
 .pill.bad{background:var(--bad-soft); color:var(--bad)}
 .pill.info{background:var(--blue-soft); color:var(--blue)}
 .pill.orange{background:#FFEDD5; color:var(--orange-dark)}
-.round-picker{margin-left:auto; display:flex; align-items:center; gap:10px;
+.round-picker{display:flex; align-items:center; gap:10px;
   background:var(--card); border:1px solid var(--line); border-radius:999px; padding:7px 8px 7px 16px;
   box-shadow:var(--shadow-soft)}
 .round-picker span{font-size:.82rem; font-weight:700; color:var(--ink-mid)}
@@ -151,7 +151,8 @@ nav{display:flex; flex-direction:column; gap:5px}
 .kv{display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed var(--line)}
 .kv:last-child{border-bottom:0}
 .kv .k{color:var(--ink-mid); font-size:.9rem}
-.kv .v{font-weight:800; font-size:.95rem; white-space:nowrap}
+.kv .v{font-weight:800; font-size:.95rem; text-align:right; min-width:0; overflow-wrap:anywhere}
+.kv{align-items:baseline}
 .bar-track{height:9px; border-radius:999px; background:var(--line); overflow:hidden; margin-top:7px}
 .bar-fill{height:100%; border-radius:999px; background:linear-gradient(90deg,var(--orange-light),var(--orange-dark))}
 .bar-fill.good{background:linear-gradient(90deg,#4ADE80,#15803D)}
@@ -169,7 +170,10 @@ nav{display:flex; flex-direction:column; gap:5px}
 .lede{font-size:1.02rem; line-height:1.6; color:var(--ink-mid)}
 
 /* ---------- tables ---------- */
-.tbl-wrap{overflow-x:auto; margin:0 -4px}
+.tbl-wrap{overflow-x:auto; margin:0 -4px; scrollbar-width:thin; position:relative}
+.tbl-wrap.scrollable{border-right:3px solid var(--amber-soft)}
+.scroll-hint{font-size:.8rem; font-weight:700; color:var(--warn); background:var(--warn-soft);
+  border-radius:999px; padding:3px 11px; display:inline-block; margin-top:9px}
 th,td{text-align:right; padding:10px 12px; font-size:.9rem; white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 thead th{font-size:.78rem; letter-spacing:.03em; color:var(--ink-soft); font-weight:800;
@@ -201,6 +205,17 @@ tr.total-row td{border-top:2px solid var(--line-strong)}
 .legend i{display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:7px; vertical-align:-2px}
 .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
   clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.zoom-wrap{position:relative; overflow:hidden; border-radius:12px; touch-action:none}
+.zoom-wrap svg.chart{transform-origin:50% 50%; will-change:transform}
+.zoom-wrap.zoomed{cursor:grab; box-shadow:inset 0 0 0 2px var(--line-strong)}
+.zoom-wrap.zoomed.grabbing{cursor:grabbing}
+.zoom-reset{position:absolute; top:10px; right:10px; display:none; z-index:3; cursor:pointer;
+  font-family:inherit; font-size:.78rem; font-weight:800; color:var(--ink);
+  background:rgba(255,255,255,.94); border:1px solid var(--line-strong);
+  border-radius:999px; padding:5px 12px; box-shadow:var(--shadow-soft)}
+.zoom-wrap.zoomed .zoom-reset{display:block}
+.zoom-hint{font-size:.78rem; color:var(--ink-soft); margin-top:6px}
+@media print{.zoom-wrap svg.chart{transform:none!important}.zoom-reset{display:none!important}}
 .chart-caption{font-size:.85rem; color:var(--ink-soft); margin-top:10px; line-height:1.5}
 
 /* ---------- timeline / phases ---------- */
@@ -292,6 +307,7 @@ tr.total-row td{border-top:2px solid var(--line-strong)}
         <h1 id="view-title">Overview and ROI</h1>
         <div class="sub" id="view-sub"></div>
       </div>
+      <div class="zoom-hint" style="align-self:center;margin-left:auto">Scroll to zoom a chart · drag to pan · double-click to reset</div>
       <div class="round-picker">
         <span>Round</span>
         <label class="sr-only" for="round-select">Select round</label>
@@ -613,6 +629,83 @@ function wireSorts(){
   pendingSorts=[];
 }
 
+/* scroll to zoom, drag to pan, double-click or Reset to restore */
+function wireZoom(){
+  document.querySelectorAll(".view.active svg.chart").forEach(svg=>{
+    if(svg.parentElement && svg.parentElement.classList.contains("zoom-wrap")) return;
+    const wrap=document.createElement("div");
+    wrap.className="zoom-wrap";
+    svg.parentNode.insertBefore(wrap,svg);
+    wrap.appendChild(svg);
+    const btn=document.createElement("button");
+    btn.type="button"; btn.className="zoom-reset"; btn.textContent="Reset zoom";
+    wrap.appendChild(btn);
+
+    let sc=1, tx=0, ty=0, dragging=false, lx=0, ly=0;
+    const MAX=8;
+    const apply=()=>{
+      svg.style.transform="translate("+tx+"px,"+ty+"px) scale("+sc+")";
+      wrap.classList.toggle("zoomed", sc>1.005);
+    };
+    const clamp=()=>{
+      const r=wrap.getBoundingClientRect();
+      const mx=(sc-1)*r.width/2, my=(sc-1)*r.height/2;
+      tx=Math.max(-mx,Math.min(mx,tx));
+      ty=Math.max(-my,Math.min(my,ty));
+    };
+    const reset=()=>{ sc=1; tx=0; ty=0; apply(); };
+
+    wrap.addEventListener("wheel",e=>{
+      const next=Math.min(MAX,Math.max(1, sc*(e.deltaY<0?1.18:1/1.18)));
+      if(next===sc) return;               // already at a limit: let the page scroll normally
+      e.preventDefault();
+      const r=wrap.getBoundingClientRect();
+      const cx=e.clientX-r.left-r.width/2, cy=e.clientY-r.top-r.height/2;
+      tx=cx-(cx-tx)*(next/sc); ty=cy-(cy-ty)*(next/sc);
+      sc=next;
+      if(sc<=1.005){ reset(); return; }
+      clamp(); apply();
+    },{passive:false});
+
+    wrap.addEventListener("pointerdown",e=>{
+      if(e.target.closest(".zoom-reset")) return;   // let the button take its own click
+      if(sc<=1.005 || e.button!==0) return;
+      dragging=true; lx=e.clientX; ly=e.clientY;
+      wrap.classList.add("grabbing");
+      try{ wrap.setPointerCapture(e.pointerId); }catch(err){}
+      e.preventDefault();
+    });
+    wrap.addEventListener("pointermove",e=>{
+      if(!dragging) return;
+      tx+=e.clientX-lx; ty+=e.clientY-ly; lx=e.clientX; ly=e.clientY;
+      clamp(); apply();
+    });
+    const stop=e=>{ dragging=false; wrap.classList.remove("grabbing");
+      try{ wrap.releasePointerCapture(e.pointerId); }catch(err){} };
+    wrap.addEventListener("pointerup",stop);
+    wrap.addEventListener("pointercancel",stop);
+    wrap.addEventListener("dblclick",e=>{ e.preventDefault(); reset(); });
+    btn.addEventListener("click",reset);
+  });
+}
+
+/* flag tables that are wider than their card so the edge doesn't read as clipping */
+function markScrollableTables(){
+  document.querySelectorAll(".view.active .tbl-wrap").forEach(w=>{
+    const over = w.scrollWidth-w.clientWidth > 4;
+    w.classList.toggle("scrollable", over);
+    const next=w.nextElementSibling;
+    if(over && !(next && next.classList.contains("scroll-hint"))){
+      const h=document.createElement("div");
+      h.className="scroll-hint"; h.textContent="Scroll sideways for more columns";
+      w.parentNode.insertBefore(h,w.nextSibling);
+    } else if(!over && next && next.classList.contains("scroll-hint")){
+      next.remove();
+    }
+  });
+}
+window.addEventListener("resize",()=>{ try{ markScrollableTables(); }catch(e){} });
+
 /* small building blocks */
 const wm = '<svg class="card-watermark" viewBox="0 0 200 200" fill="none" aria-hidden="true">'+
   '<circle cx="100" cy="100" r="92" stroke="currentColor" stroke-width="6"/>'+
@@ -648,21 +741,21 @@ function statusPill(s){
    5. Views
    ============================================================ */
 const VIEWS=[
- {id:"overview", title:"Overview and ROI",
+ {id:"overview", roundAware:false, title:"Overview and ROI",
   sub:"Six rounds, one fixed market. Contracted revenue never moved more than 3.4% — every euro of improvement came from execution.", build:v1},
- {id:"targets", title:"Targets versus achieved",
+ {id:"targets", roundAware:false, title:"Targets versus achieved",
   sub:"What each function set out to achieve, what actually happened, and why the gaps opened.", build:v2},
- {id:"purchasing", title:"Purchasing and suppliers",
+ {id:"purchasing", roundAware:true, title:"Purchasing and suppliers",
   sub:"Supplier reliability, rejection and landed cost, traced through to COGS and ROI.", build:v3},
- {id:"operations", title:"Operations and bottling",
+ {id:"operations", roundAware:true, title:"Operations and bottling",
   sub:"Inbound warehouse, outbound warehouse, mixing plant and bottling line, each against the euros it moved.", build:v4},
- {id:"supplychain", title:"Supply chain: components and products", navTitle:"Supply chain",
+ {id:"supplychain", roundAware:true, title:"Supply chain: components and products", navTitle:"Supply chain",
   sub:"Component and product availability, ranked by their impact on realized revenue and ROI.", build:v5},
- {id:"sales", title:"Sales and customers",
+ {id:"sales", roundAware:true, title:"Sales and customers",
   sub:"Service level and shelf life by customer, and the contract mechanic that shaped every decision.", build:v6},
- {id:"models", title:"How we modelled it",
+ {id:"models", roundAware:false, title:"How we modelled it",
   sub:"Four models built from our own result data, validated against it before any decision was committed.", build:v7},
- {id:"change", title:"What we would change",
+ {id:"change", roundAware:false, title:"What we would change",
   sub:"Five decisions we would take differently, and what each one cost.", build:v8}
 ];
 
@@ -822,8 +915,8 @@ function v3(){
       {t:eur(pv+tr),v:pv+tr},
       {t:active.join(", "),v:""}];
   });
-  const impact=SUPPLIERS.filter(s=>supplierActive(s,6)).map(s=>({
-    label:s, value:landed(s,6)*0.01/F.investment[6]*100
+  const impact=SUPPLIERS.filter(s=>supplierActive(s,ROUND)).map(s=>({
+    label:s, value:landed(s,ROUND)*0.01/F.investment[ROUND]*100
   })).sort((a,b)=>b.value-a.value);
 
   const relSeries=SUPPLIERS.map((s,i)=>({name:s,values:series("suppliers",s,"Delivery reliability (%)"),color:PALETTE[i%PALETTE.length]}));
@@ -854,7 +947,7 @@ function v3(){
         {fmt:v=>pct(v,1),labelPoints:true,height:280,title:"Raw material cost share"})+
       '<div class="callout">From '+pct(rmPct[0],2)+' to '+pct(rmPct[6],2)+'. Contracted revenue barely moved, so the entire decline is cost-side.</div>'),
 
-    card("s4","Supplier impact on ROI","ROI basis points gained from a 1% reduction in that supplier's landed cost. Round 6 suppliers only.",
+    card("s4","Supplier impact on ROI","ROI basis points gained from a 1% reduction in that supplier's landed cost. Suppliers under contract in Round "+ROUND+".",
       hBarChart(impact.map(i=>({label:i.label.split(" ")[0]+" "+(i.label.split(" ")[1]||""),value:i.value})),
         {fmt:v=>num(v,3)+" bps",labelWidth:250,title:"Supplier ROI leverage"})+
       '<div class="callout">Miami Oranges is by far the largest lever — it is over 45% of purchase value. Vitamin C is the smallest, which is exactly why its constraint stayed hidden for four rounds.</div>')
@@ -1114,7 +1207,7 @@ function v6(){
       PRODUCTS.map(p=>'<th>'+esc(p.replace("Fressie ",""))+'</th>').join("")+'</tr></thead><tbody>';
     CUSTOMERS.forEach(c=>{
       h+='<tr><td>'+esc(c)+'</td>'+PRODUCTS.map(p=>{
-        const v=at("customerProduct",c+" | "+p,"Service level (order lines)",6);
+        const v=at("customerProduct",c+" | "+p,"Service level (order lines)",ROUND);
         if(v===null||v===undefined) return '<td class="num" style="color:var(--ink-soft)">not sold</td>';
         const bg=v>=0.96?"var(--good-soft)":(v>=0.95?"var(--warn-soft)":"var(--bad-soft)");
         return '<td class="num" style="background:'+bg+'">'+pct(v,2)+'</td>';
@@ -1123,7 +1216,7 @@ function v6(){
     return h+'</tbody></table></div>';
   })();
 
-  const mape=PRODUCTS.map(p=>at("products",p,"Forecast error (MAPE)",6));
+  const mape=PRODUCTS.map(p=>at("products",p,"Forecast error (MAPE)",ROUND));
 
   return [
     card("s12","A promise is an option we have written","For every percentage point of service level, the penalty for falling short is roughly five times the bonus for exceeding.",
@@ -1141,12 +1234,12 @@ function v6(){
       ],{fmt:v=>eur(v),labelWidth:280,title:"Cost per unserved order line"})+
       '<div class="callout">Priority order adopted in Round 5: Food & Groceries, then Dominick\u2019s, then LAND Market. One of three changes that turned penalties into a bonus.</div>'),
 
-    card("s12","Contracted versus attained index, Round 6","",
+    card("s12","Contracted versus attained index, Round 6","Fixed to Round 6 — this validates the contract index model against the final configuration, so it does not follow the round selector.",
       makeTable(["Customer","Contracted","Attained","Difference","Euro effect"],idxRows)+
       '<div class="callout">The contracted indices are the exact output of the contract index model applied to the Round 6 configuration, which makes this a validation rather than just a result. Net penalty '+
       eur(F.bonusPenalty[6])+' on '+eur(F.realizedRevenue[6])+' of revenue.</div>'),
 
-    card("s6","Forecast error by product, Round 6","The one functional KPI never treated as a lever.",
+    card("s6","Forecast error by product, Round "+ROUND,"The one functional KPI never treated as a lever.",
       barChart(mape,PRODUCTS.map(p=>p.replace("Fressie Orange","FO").replace(" 1 liter"," 1L")),
         {fmt:v=>pct(v,1),height:300,title:"Forecast error by product"})+
       '<div class="callout">MAPE stayed between '+pct(Math.min.apply(null,mape),2)+' and '+pct(Math.max.apply(null,mape),2)+
@@ -1166,14 +1259,14 @@ function v6(){
       lineChart([{name:"Obsolescence",values:DATA.cumulativeServiceLevel.obsolescence,color:"#EF4444"}],
         R_LABELS,{fmt:v=>pct(v,1),labelPoints:true,height:250,forceLegend:true,title:"Product obsolescence"})),
 
-    card("s12","Service level by customer and product, Round 6","Green at or above 96%, amber 95 to 96%, red below 95%.",heat)
+    card("s12","Service level by customer and product, Round "+ROUND,"Green at or above 96%, amber 95 to 96%, red below 95%.",heat)
   ].join("");
 }
 
 /* ---------- View 7 ---------- */
 function v7(){
   const m=DATA.models;
-  const modelCard=(t,formula,body)=> card("s6",t,"",
+  const modelCard=(t,formula,body,span)=> card(span||"s6",t,"",
     '<pre style="background:var(--cream-warm);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;overflow-x:auto;font-size:.86rem;line-height:1.6;margin:0 0 14px">'+esc(formula)+'</pre>'+body);
 
   return [
@@ -1193,7 +1286,7 @@ function v7(){
       makeTable(["Customer","Penalty rate","Bonus rate","Table reward rate"],
         CUSTOMERS.map(c=>[{t:c},{t:num(m.penaltyBonus[c].penaltyRate,4)},
           {t:num(m.penaltyBonus[c].bonusRate,5)},{t:num(m.penaltyBonus[c].tableRewardRate,3)}]))+
-      '<div class="callout">Validation: predicted Food &amp; Groceries Round 4 penalty €46,846 against an actual €46,813 — an error of 0.07%. This is the single most important finding of the game.</div>'),
+      '<div class="callout">Validation: predicted Food &amp; Groceries Round 4 penalty €46,846 against an actual €46,813 — an error of 0.07%. This is the single most important finding of the game.</div>',"s12"),
 
     modelCard("Payment terms investment model",
       "payment terms investment = receivables − payables\nreceivables = customer payment weeks ÷ 26 × realized revenue\npayables    = weighted supplier payment weeks ÷ 26 × purchase value",
@@ -1267,7 +1360,10 @@ function go(i){
   document.getElementById("view-title").textContent=v.title;
   document.getElementById("view-sub").textContent=v.sub;
   document.getElementById("views").innerHTML='<div class="view active"><div class="bento">'+v.build()+'</div></div>';
+  document.querySelector(".round-picker").style.display = v.roundAware ? "" : "none";
   wireSorts();
+  wireZoom();
+  markScrollableTables();
   renderNav();
   window.scrollTo({top:0,behavior:"instant"});
   location.hash=v.id;

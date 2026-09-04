@@ -33,6 +33,10 @@ Left and right arrows move between views. The round selector in the header re-re
 
 Any table heading marked with a sort arrow is clickable and keyboard-operable — useful for ranking suppliers, customers, components or products live during questions.
 
+**Charts zoom.** Scroll the mouse wheel over any chart to zoom in, drag to pan around inside its tile, and double-click (or press *Reset zoom*) to restore. Scrolling when a chart is already at normal size scrolls the page as usual, so it never traps the cursor. Useful for pointing at a specific round from the back of the room.
+
+**The round selector only appears where it does something.** Views 3 to 6 read from the selected round. Views 1, 2, 7 and 8 are inherently whole-game or Round 6 views, so the control is hidden there rather than sitting inert.
+
 ## Presenting from it
 
 - Have the dashboard open in a second window **before** you start, and switch with alt-tab rather than clicking a link. A link that fails to load is the one thing you can't recover from mid-sentence.
@@ -89,9 +93,9 @@ Every chart carries an `aria-label` and a visually hidden data table, so the con
 
 ## Known limitations
 
-- **Below about 1400px wide, the widest tables scroll horizontally.** They're fully readable, but you may need to drag. The layout is tuned for 1920×1080 projection; on a laptop, some tables will need a sideways scroll.
+- **Below about 1400px wide, the widest tables scroll horizontally.** They're fully readable and a "scroll sideways for more columns" hint appears automatically, but you may need to drag. The layout is tuned for 1920×1080 projection.
 - The sidebar hides below 1100px. This is a presentation tool, not a mobile app.
-- The round selector changes single-round values, but a handful of tiles are inherently Round-6 specific (the contracted-versus-attained index validation, for instance) and are labelled accordingly.
+- One tile — the contracted-versus-attained index validation — is pinned to Round 6 even inside a round-aware view, because it validates the contract index model against the final configuration. Its caption says so.
 
 ## Verification
 
