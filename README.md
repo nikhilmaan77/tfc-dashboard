@@ -43,13 +43,17 @@ Any table heading marked with a sort arrow is clickable and keyboard-operable �
 
 Every figure is taken from the simulation's own result export and embedded in the file as a single `DATA` object. Nothing is estimated, smoothed or filled in. Derived quantities — raw-material cost share, gross margin per round, ROI contribution, landed cost, component criticality, the profit bridge — are all computed in JavaScript from that object rather than typed in, so a label can never disagree with the chart beside it.
 
-Three consistency assertions run automatically on load:
+Five consistency assertions run automatically on load, at every round:
 
 - product gross margin sums to total gross margin
 - customer contracted revenue sums to total contracted revenue
 - purchase value plus production costs equals cost of goods sold
+- the headline service level equals the order-line-weighted customer figure
+- the headline obsolescence equals the demand-weighted product figure
 
-If any of them fail, a red banner appears at the top of the page instead of failing silently. On the shipped data all three pass at every round.
+If any fail, a red banner appears at the top of the page instead of failing silently. On the shipped data all five pass at every round.
+
+Every value was additionally diffed offline against a fresh independent read of `TFC_0_6.xlsx` — 3,276 comparisons, zero mismatches — and the decision history was checked against the screenshots in the decision log.
 
 Round 0 is the inherited starting position the team took over, not one of their decisions, and is labelled as such throughout.
 

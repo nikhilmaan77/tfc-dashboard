@@ -365,6 +365,16 @@ function runChecks(){
     let cr=0; CUSTOMERS.forEach(c=> cr += DATA.customerFinance[c].contracted[r]);
     eq(cr, F.contractedRevenue[r], 5, "Round "+r+": customer contracted revenue does not sum to total");
     eq(F.purchaseValue[r]+F.productionCosts[r], F.cogs[r], 5, "Round "+r+": purchase + production ≠ COGS");
+    // headline service level must equal the order-line-weighted customer figure
+    let sn=0,sd=0;
+    CUSTOMERS.forEach(c=>{ const w=series("customers",c,"Order lines per week")[r];
+      sn+=series("customers",c,"Service level (order lines)")[r]*w; sd+=w; });
+    eq(sn/sd, DATA.cumulativeServiceLevel.serviceLevel[r], 0.0002, "Round "+r+": headline service level does not match customer weighting");
+    // headline obsolescence must equal the demand-weighted product figure
+    let on=0,od=0;
+    PRODUCTS.forEach(p=>{ const w=series("products",p,"Demand per week (units)")[r];
+      on+=series("products",p,"Obsoletes (%)")[r]*w; od+=w; });
+    eq(on/od, DATA.cumulativeServiceLevel.obsolescence[r], 0.0002, "Round "+r+": headline obsolescence does not match product weighting");
   }
   const el=document.getElementById("dq");
   if(fails.length) el.innerHTML='<div class="dq-fail">Data check failed — '+fails.length+
@@ -657,8 +667,26 @@ const VIEWS=[
 ];
 
 /* ---------- View 1 ---------- */
+/* Per-customer service level promised, from the decision log. Index 0 = inherited. */
+const PROMISED_SL={
+  "Food & Groceries":[null,0.946,0.95,0.95,0.95,0.95,0.96],
+  "LAND Market":     [null,0.950,0.95,0.95,0.95,0.95,0.96],
+  "Dominick's":      [null,0.940,0.95,0.95,0.95,0.95,0.96]
+};
+/* Weighted by order lines per week, matching how the achieved service level is weighted. */
+function promisedWeighted(){
+  return R_LABELS.map((_,r)=>{
+    if(r===0) return null;
+    let num=0,den=0;
+    CUSTOMERS.forEach(c=>{
+      const w=at("customers",c,"Order lines per week",r);
+      num+=PROMISED_SL[c][r]*w; den+=w;
+    });
+    return num/den;
+  });
+}
 function v1(){
-  const promised=[null,94.7,95,95,95,95,96].map(v=>v===null?null:v/100);
+  const promised=promisedWeighted();
   const achieved=DATA.cumulativeServiceLevel.serviceLevel.map((v,i)=> i===0?null:v);
   const bridge=(()=>{
     const a=1,b=6, other=(r)=>F.indirectCost[r]-F.stockCosts[r]-F.handlingCosts[r];
