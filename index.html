@@ -9,12 +9,12 @@
    Design tokens. Restyle the whole dashboard from this block.
    ============================================================ */
 :root{
-  --cream:#FAF6ED; --cream-warm:#FCF9F2; --card:#FFFFFF;
+  --cream:#FFAA33; --cream-warm:#FFF6E8; --card:#FFFFFF;
   --orange:#EA580C; --orange-dark:#C2410C; --orange-light:#FB923C;
   --amber:#F59E0B; --amber-soft:#FDE68A;
   --navy:#0B101D; --navy-soft:#161D2E;
-  --ink:#0F172A; --ink-mid:#475569; --ink-soft:#7C8698;
-  --line:#EFE7D8; --line-strong:#E2D9C8;
+  --ink:#000000; --ink-mid:#3A3A3A; --ink-soft:#5A5A5A;
+  --line:#E8DCC8; --line-strong:#D8CBB4;
   --good:#15803D; --good-soft:#DCFCE7;
   --bad:#B91C1C; --bad-soft:#FEE2E2;
   --warn:#B45309; --warn-soft:#FEF3C7;
@@ -42,12 +42,12 @@ table{border-collapse:collapse; width:100%}
 /* ---------- ambient citrus background ---------- */
 .ambient{position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0}
 .glow{position:absolute; border-radius:50%; filter:blur(90px)}
-.glow-a{top:-140px; right:-120px; width:420px; height:420px; background:rgba(253,186,116,.45)}
-.glow-b{bottom:-180px; left:340px; width:520px; height:520px; background:rgba(252,211,77,.40)}
-.glow-c{top:32%; left:52%; width:340px; height:340px; background:rgba(254,215,170,.45)}
-.citrus{position:absolute; color:rgba(234,88,12,.13)}
+.glow-a{top:-140px; right:-120px; width:420px; height:420px; background:rgba(255,255,255,.30)}
+.glow-b{bottom:-180px; left:340px; width:520px; height:520px; background:rgba(255,255,255,.22)}
+.glow-c{top:32%; left:52%; width:340px; height:340px; background:rgba(255,255,255,.20)}
+.citrus{position:absolute; color:rgba(120,60,10,.13)}
 .citrus-a{right:70px; top:20px; width:380px; height:380px; animation:spin 240s linear infinite}
-.citrus-b{left:300px; bottom:-60px; width:300px; height:300px; color:rgba(245,158,11,.12); animation:spin 300s linear infinite reverse}
+.citrus-b{left:300px; bottom:-60px; width:300px; height:300px; color:rgba(120,60,10,.10); animation:spin 300s linear infinite reverse}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.citrus{animation:none!important}}
 
@@ -88,25 +88,27 @@ nav{display:flex; flex-direction:column; gap:5px}
 .main{flex:1; min-width:0; padding:26px 30px 60px}
 .topbar{display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:22px}
 .topbar h1{font-size:2.05rem}
-.topbar .sub{color:var(--ink-mid); font-size:.98rem; margin-top:5px; max-width:70ch}
+.topbar .sub{color:#241300; font-size:.98rem; margin-top:5px; max-width:70ch}
 .pill{display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:5px 13px;
   font-size:.8rem; font-weight:700; background:var(--warn-soft); color:var(--warn)}
 .pill.good{background:var(--good-soft); color:var(--good)}
 .pill.bad{background:var(--bad-soft); color:var(--bad)}
 .pill.info{background:var(--blue-soft); color:var(--blue)}
 .pill.orange{background:#FFEDD5; color:var(--orange-dark)}
-.round-picker{display:flex; align-items:center; gap:10px;
-  background:var(--card); border:1px solid var(--line); border-radius:999px; padding:7px 8px 7px 16px;
-  box-shadow:var(--shadow-soft)}
-.round-picker span{font-size:.82rem; font-weight:700; color:var(--ink-mid)}
-.round-picker select{font-family:inherit; font-size:.92rem; font-weight:700; color:var(--ink);
-  border:0; background:var(--cream-warm); border-radius:999px; padding:7px 13px; cursor:pointer}
+.round-picker{display:flex; align-items:center; gap:10px; justify-content:space-between;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r-md); padding:11px 13px}
+.round-picker span{font-size:.7rem; letter-spacing:.14em; font-weight:700; color:rgba(255,255,255,.5)}
+.round-picker select{font-family:inherit; font-size:.9rem; font-weight:700; color:#fff;
+  border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.10);
+  border-radius:9px; padding:6px 10px; cursor:pointer; flex:1; min-width:0}
+.round-picker select option{color:#111}
 
 /* ---------- bento ---------- */
-.bento{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:18px; align-items:start}
+.bento{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:14px; align-items:stretch; grid-auto-flow:row dense}
 .card{grid-column:span 12; background:var(--card); border:1px solid var(--line);
-  border-radius:var(--r-lg); padding:24px 26px; box-shadow:var(--shadow-soft);
-  position:relative; overflow:hidden; min-width:0}
+  border-radius:var(--r-lg); padding:20px 22px; box-shadow:var(--shadow-soft);
+  position:relative; overflow:hidden; min-width:0; display:flex; flex-direction:column}
 .card.hero{background:linear-gradient(145deg,#FB923C 0%,#EA580C 55%,#C2410C 100%);
   color:#fff; border-color:transparent; box-shadow:var(--shadow-glow)}
 .card.hero .card-title,.card.hero .card-note{color:rgba(255,255,255,.85)}
@@ -214,7 +216,12 @@ tr.total-row td{border-top:2px solid var(--line-strong)}
   background:rgba(255,255,255,.94); border:1px solid var(--line-strong);
   border-radius:999px; padding:5px 12px; box-shadow:var(--shadow-soft)}
 .zoom-wrap.zoomed .zoom-reset{display:block}
-.zoom-hint{font-size:.78rem; color:var(--ink-soft); margin-top:6px}
+.chart-tip{position:fixed; z-index:9999; pointer-events:none; opacity:0; transition:opacity .12s;
+  background:var(--navy); color:#fff; border-radius:10px; padding:9px 13px; font-size:.9rem;
+  font-weight:600; line-height:1.35; box-shadow:0 8px 24px -6px rgba(0,0,0,.45); max-width:300px}
+.chart-tip.on{opacity:1}
+.chart-tip b{display:block; font-size:.78rem; font-weight:700; opacity:.72; letter-spacing:.04em}
+.zoom-hint{font-size:.78rem; color:#3D2200; margin-top:6px; font-weight:600}
 @media print{.zoom-wrap svg.chart{transform:none!important}.zoom-reset{display:none!important}}
 .chart-caption{font-size:.85rem; color:var(--ink-soft); margin-top:10px; line-height:1.5}
 
@@ -290,13 +297,19 @@ tr.total-row td{border-top:2px solid var(--line-strong)}
       <div class="s">GMBA Oct 26 · Dr. Rajiv Aserkar</div>
     </div>
 
+    <div class="round-picker" id="round-picker">
+      <span>ROUND</span>
+      <label class="sr-only" for="round-select">Select round</label>
+      <select id="round-select"></select>
+    </div>
+
     <div class="nav-label">DASHBOARD VIEWS</div>
     <nav id="nav" aria-label="Dashboard views"></nav>
 
     <div class="side-foot">
-      <div class="k">FINAL ROUND ROI</div>
+      <div class="k" id="sf-label">ROUND 6 ROI</div>
       <div class="v" id="sf-roi">6.76%</div>
-      <div class="n">Round 6 of 6 · demand was fixed in every round, so there was never a volume lever.</div>
+      <div class="n" id="sf-note">Final round. Demand was fixed in every round, so there was never a volume lever.</div>
     </div>
   </aside>
 
@@ -308,11 +321,6 @@ tr.total-row td{border-top:2px solid var(--line-strong)}
         <div class="sub" id="view-sub"></div>
       </div>
       <div class="zoom-hint" style="align-self:center;margin-left:auto">Scroll to zoom a chart · drag to pan · double-click to reset</div>
-      <div class="round-picker">
-        <span>Round</span>
-        <label class="sr-only" for="round-select">Select round</label>
-        <select id="round-select"></select>
-      </div>
     </div>
     <div id="views"></div>
   </main>
@@ -500,16 +508,17 @@ function barChart(values, labels, o={}){
 
 /* horizontal bars for rankings */
 function hBarChart(items, o={}){
-  const fmt=o.fmt||(v=>num(v,2)), rowH=46, h=items.length*rowH+40;
+  const fmt=o.fmt||(v=>num(v,2)), rowH=o.rowH||46, h=items.length*rowH+40;
   const max=Math.max.apply(null,items.map(i=>Math.abs(i.value)));
   const labW=o.labelWidth||300, barMax=W-labW-190;
   let s=svgOpen(h,o.title||"Ranking");
   items.forEach((it,i)=>{
     const yy=22+i*rowH, w=max===0?0:Math.abs(it.value)/max*barMax;
-    s+='<text class="axis-label" x="0" y="'+(yy+22)+'" style="fill:var(--ink);font-weight:700">'+esc(it.label)+'</text>'+
-       '<rect x="'+labW+'" y="'+(yy+6)+'" width="'+Math.max(3,w)+'" height="26" rx="8" fill="'+
+    const bh=Math.min(38,rowH-16);
+    s+='<text class="axis-label" x="0" y="'+(yy+bh/2+11)+'" style="fill:var(--ink);font-weight:700">'+esc(it.label)+'</text>'+
+       '<rect x="'+labW+'" y="'+(yy+4)+'" width="'+Math.max(3,w)+'" height="'+bh+'" rx="8" fill="'+
        (it.color||(i===0?"#C2410C":"#FDBA74"))+'"><title>'+esc(it.label+": "+fmt(it.value))+'</title></rect>'+
-       '<text class="value-label" x="'+(labW+w+14)+'" y="'+(yy+26)+'">'+esc(fmt(it.value))+'</text>';
+       '<text class="value-label" x="'+(labW+w+14)+'" y="'+(yy+bh/2+10)+'">'+esc(fmt(it.value))+'</text>';
   });
   s+='</svg>'+srTable(o.title||"Ranking",["Item","Value"],items.map(i=>[i.label,fmt(i.value)]));
   return s;
@@ -627,6 +636,40 @@ function wireSorts(){
     });
   });
   pendingSorts=[];
+}
+
+/* hover popups: our own, instead of the browser's slow native SVG tooltip */
+let TIP=null;
+function wireTooltips(){
+  if(!TIP){ TIP=document.createElement("div"); TIP.className="chart-tip"; document.body.appendChild(TIP); }
+  document.querySelectorAll(".view.active svg.chart").forEach(svg=>{
+    svg.querySelectorAll("circle,rect,path").forEach(el=>{
+      const t=el.querySelector("title"); if(!t) return;
+      const text=t.textContent;
+      el.removeChild(t);
+      el.setAttribute("aria-label",text);
+      el.setAttribute("tabindex","0");
+      el.style.cursor="crosshair";
+      const parts=text.split(": ");
+      const head=parts.length>1?parts.slice(0,-1).join(": "):"";
+      const val=parts.length>1?parts[parts.length-1]:text;
+      const show=(x,y)=>{
+        TIP.innerHTML=(head?"<b>"+esc(head)+"</b>":"")+esc(val);
+        TIP.classList.add("on");
+        const r=TIP.getBoundingClientRect();
+        let left=x+14, top=y-r.height-14;
+        if(left+r.width>window.innerWidth-10) left=x-r.width-14;
+        if(top<10) top=y+18;
+        TIP.style.left=left+"px"; TIP.style.top=top+"px";
+      };
+      el.addEventListener("mouseenter",e=>show(e.clientX,e.clientY));
+      el.addEventListener("mousemove",e=>show(e.clientX,e.clientY));
+      el.addEventListener("focus",()=>{const b=el.getBoundingClientRect(); show(b.left+b.width/2,b.top);});
+      const hide=()=>TIP.classList.remove("on");
+      el.addEventListener("mouseleave",hide);
+      el.addEventListener("blur",hide);
+    });
+  });
 }
 
 /* scroll to zoom, drag to pan, double-click or Reset to restore */
@@ -981,20 +1024,20 @@ function v3(){
       lineChart(relSeries,R_LABELS,{fmt:v=>pct(v,1),refLine:0.95,refLabel:"95% agreed",height:320,title:"Supplier delivery reliability"})+
       '<div class="chart-caption">Round 1 is the moment the results revealed the problem: four of five suppliers came in below the level they had agreed to.</div>'),
 
-    card("s4","Rejection rate to COGS","PET quality was upgraded to High in Round 5.",
+    card("s6","Rejection rate to COGS","PET quality was upgraded to High in Round 5.",
       lineChart([{name:"PET rejection",values:series("components","PET","Rejection (%)"),color:"#EA580C"}],
-        R_LABELS,{fmt:v=>pct(v,2),labelPoints:true,height:280,title:"PET rejection rate"})+
+        R_LABELS,{fmt:v=>pct(v,2),labelPoints:true,height:330,title:"PET rejection rate"})+
       '<div class="callout">Rejection fell from '+pct(at("components","PET","Rejection (%)",4))+' to '+
       pct(at("components","PET","Rejection (%)",5))+'. Every rejected unit is purchased, shipped and scrapped, so this lands directly in COGS.</div>'),
 
-    card("s4","Raw material cost as a share of realized revenue","Purchase value ÷ realized revenue.",
+    card("s6","Raw material cost as a share of realized revenue","Purchase value ÷ realized revenue.",
       lineChart([{name:"Raw material cost %",values:rmPct,color:"#C2410C"}],R_LABELS,
-        {fmt:v=>pct(v,1),labelPoints:true,height:280,title:"Raw material cost share"})+
+        {fmt:v=>pct(v,1),labelPoints:true,height:330,title:"Raw material cost share"})+
       '<div class="callout">From '+pct(rmPct[0],2)+' to '+pct(rmPct[6],2)+'. Contracted revenue barely moved, so the entire decline is cost-side.</div>'),
 
-    card("s4","Supplier impact on ROI","ROI basis points gained from a 1% reduction in that supplier's landed cost. Suppliers under contract in Round "+ROUND+".",
-      hBarChart(impact.map(i=>({label:i.label.split(" ")[0]+" "+(i.label.split(" ")[1]||""),value:i.value})),
-        {fmt:v=>num(v,3)+" bps",labelWidth:250,title:"Supplier ROI leverage"})+
+    card("s12","Supplier impact on ROI","ROI basis points gained from a 1% reduction in that supplier's landed cost. Suppliers under contract in Round "+ROUND+".",
+      hBarChart(impact.map(i=>({label:i.label,value:i.value})),
+        {fmt:v=>num(v,3)+" bps",labelWidth:340,title:"Supplier ROI leverage"})+
       '<div class="callout">Miami Oranges is by far the largest lever, at over 45% of purchase value. Vitamin C is the smallest, which is exactly why its constraint stayed hidden for four rounds.</div>')
   ].join("");
 }
@@ -1014,8 +1057,9 @@ function v4(){
     '</strong>, '+num(total/F.investment[r]*100,2)+'% of total investment and '+
     num(total/F.cogs[r]*100,1)+'% of COGS</div>');
 
-  const peakVals=[null,null,859,859,859,null,null];
-  const capVals=DATA.warehouses[inW]["Capacity"];
+  const peakVals=[859,859,859];
+  const capVals=[DATA.warehouses[inW]["Capacity"][2],DATA.warehouses[inW]["Capacity"][3],
+                 DATA.warehouses[inW]["Capacity"][4]];
 
   return [
     opCard("Inbound warehouse",[
@@ -1058,9 +1102,11 @@ function v4(){
     card("s7","Overflow is a peak event, not an average one",
       "The peak is set by safety stock plus lot size: a replenishment lands when stock is at its floor and the whole order arrives at once. Cutting safety stock lowers the average and leaves the peak untouched.",
       lineChart([
-        {name:"Inbound peak (constant stock policy)",values:peakVals,color:"#B91C1C"},
+        {name:"Inbound peak (stock policy unchanged)",values:peakVals,color:"#B91C1C"},
         {name:"Capacity",values:capVals,color:"#2563EB",dashed:true}
-      ],R_LABELS,{fmt:v=>num(v,0),height:300,title:"Inbound peak versus capacity"})+
+      ],["R2","R3","R4"],{fmt:v=>num(v,0),height:300,
+        title:"Inbound peak versus capacity, Rounds 2 to 4"})+
+      '<div class="chart-caption">Only Rounds 2 to 4 are shown, because those are the rounds the inbound stock policy did not change, which is what holds the peak flat at 859 and makes the comparison valid.</div>'+
       makeTable(["Round","Peak","Capacity","Headroom","Actual overflow"],[
         [{t:"R2"},{t:"859"},{t:"900"},{t:"+41"},{t:pct(at("warehouses",inW,"Overflow (%)",2))}],
         [{t:"R3"},{t:"859"},{t:"950"},{t:"+91"},{t:pct(at("warehouses",inW,"Overflow (%)",3))}],
@@ -1173,7 +1219,7 @@ function v5(){
       '</div></div>'+
       '<div class="callout">Every other component was above 99% while Vitamin C sat at '+
       pct(at("components",vc,"Component availability (%)",4),2)+', and the two C-power products were the only ones below 91% service. '+
-      'SYI was both faster and cheaper on landed cost, which is the same lesson as the PET switch, found independently.</div>'),
+      'SYI was both faster and cheaper on landed cost, the same lesson as the PET switch.</div>'),
 
     card("s7","Component availability across rounds","",
       lineChart(avail,R_LABELS,{fmt:v=>pct(v,1),refLine:0.99,refLabel:"99%",height:340,title:"Component availability"})+
@@ -1271,12 +1317,12 @@ function v6(){
       makeTable(["Customer","Contracted revenue","Bonus / penalty","Realized revenue","Gross margin per round","Share","Service level","Attained shelf life","ROI contribution"],custRows,{sortable:true})+
       '<div class="callout">Food & Groceries is roughly half the business and carries the harshest penalty rate. That combination is why it was placed first in the shortage priority rule from Round 5.</div>'),
 
-    card("s6","Cost per unserved order line","Derived to set the Round 5 shortage priority rule.",
+    card("s12","Cost per unserved order line","Derived to set the Round 5 shortage priority rule.",
       hBarChart([
         {label:"Food & Groceries",value:27942},
         {label:"Dominick's",value:11640},
         {label:"LAND Market",value:7074}
-      ],{fmt:v=>eur(v),labelWidth:280,title:"Cost per unserved order line"})+
+      ],{fmt:v=>eur(v),labelWidth:330,rowH:66,title:"Cost per unserved order line"})+
       '<div class="callout">Priority order adopted in Round 5: Food & Groceries, then Dominick\u2019s, then LAND Market. One of three changes that turned penalties into a bonus.</div>'),
 
     card("s12","Contracted versus attained index, Round 6","Fixed to Round 6. This validates the contract index model against the final configuration, so it does not follow the round selector.",
@@ -1312,11 +1358,13 @@ function v6(){
 function v7(){
   const m=DATA.models;
   const modelCard=(t,formula,body,span)=> card(span||"s6",t,"",
-    '<pre style="background:var(--cream-warm);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;overflow-x:auto;font-size:.86rem;line-height:1.6;margin:0 0 14px">'+esc(formula)+'</pre>'+body);
+    '<pre style="font-family:var(--sans);background:var(--cream-warm);border:1px solid var(--line);'
+    +'border-radius:var(--r-sm);padding:15px 17px;white-space:pre-wrap;font-size:.95rem;font-weight:600;'
+    +'line-height:1.75;margin:0 0 14px;color:var(--ink)">'+esc(formula)+'</pre>'+body);
 
   return [
     modelCard("Landed cost model",
-      "purchase value = quantity × base price × contract index + transport costs\nquantity       = net demand ÷ (1 − rejection rate)\ntransport      = orders × cost per shipment + volume × cost per bulk unit",
+      "purchase value = quantity × base price × contract index + transport costs\nquantity = net demand ÷ (1 − rejection rate)\ntransport = orders × cost per shipment + volume × cost per bulk unit",
       makeTable(["Component","Base price backed out of the results"],
         Object.keys(m.landedCost.basePrices).map(k=>[{t:k},{t:"€"+num(m.landedCost.basePrices[k],3)}]))+
       '<div class="callout">'+esc(m.landedCost.keyResult)+'</div>'),
@@ -1327,14 +1375,14 @@ function v7(){
       '<div class="callout">Worked example: Philyp Jones\u2019 example index is 1.027 for High quality, 4-week payment, pallet layer, 4-hour window. The configuration actually chosen (High, 4 weeks, FTL, 1 day) gives 1.027 − 0.008 − 0.003 = <strong>1.016</strong>.</div>'),
 
     modelCard("Penalty and bonus model",
-      "realized revenue = base revenue × attained contract index\nattained index   = contracted index − penalty rate × (promised SL − actual SL)   if actual < promised\n                 = contracted index + bonus rate   × (actual SL − promised SL)   if actual > promised",
+      "realized revenue = base revenue × attained contract index\nIf achieved is below the promise: attained index = contracted index − penalty rate × points short\nIf achieved is above the promise: attained index = contracted index + bonus rate × points over",
       makeTable(["Customer","Penalty rate","Bonus rate","Table reward rate"],
         CUSTOMERS.map(c=>[{t:c},{t:num(m.penaltyBonus[c].penaltyRate,4)},
           {t:num(m.penaltyBonus[c].bonusRate,5)},{t:num(m.penaltyBonus[c].tableRewardRate,3)}]))+
       '<div class="callout">Validation: predicted Food &amp; Groceries Round 4 penalty €46,846 against an actual €46,813, an error of 0.07%. This is the single most important finding of the game.</div>',"s12"),
 
     modelCard("Payment terms investment model",
-      "payment terms investment = receivables − payables\nreceivables = customer payment weeks ÷ 26 × realized revenue\npayables    = weighted supplier payment weeks ÷ 26 × purchase value",
+      "payment terms investment = receivables − payables\nreceivables = customer payment weeks ÷ 26 × realized revenue\npayables = weighted supplier payment weeks ÷ 26 × purchase value",
       '<p class="lede">For suppliers whose terms start when ordering, effective weeks = payment term − lead time.</p>'+
       '<div class="callout">Validation: predicted €385,887 against an actual €384,555.</div>'),
 
@@ -1405,9 +1453,18 @@ function go(i){
   document.getElementById("view-title").textContent=v.title;
   document.getElementById("view-sub").textContent=v.sub;
   document.getElementById("views").innerHTML='<div class="view active"><div class="bento">'+v.build()+'</div></div>';
-  document.querySelector(".round-picker").style.display = v.roundAware ? "" : "none";
+  document.getElementById("round-picker").style.display = v.roundAware ? "" : "none";
+  const shown = v.roundAware ? ROUND : 6;
+  document.getElementById("sf-label").textContent = "ROUND "+shown+" ROI";
+  document.getElementById("sf-roi").textContent = pct(F.roi[shown]);
+  document.getElementById("sf-note").textContent =
+    (shown===0 ? "Inherited starting position, before any decision of ours."
+     : shown===6 ? "Final round. Demand was fixed in every round, so there was never a volume lever."
+     : "Demand was fixed in every round, so there was never a volume lever.")
+    + (v.roundAware ? "" : " This view covers all six rounds.");
   wireSorts();
   wireZoom();
+  wireTooltips();
   markScrollableTables();
   renderNav();
   window.scrollTo({top:0,behavior:"instant"});
@@ -1415,8 +1472,8 @@ function go(i){
 }
 function initRoundPicker(){
   const sel=document.getElementById("round-select");
-  sel.innerHTML=[0,1,2,3,4,5,6].map(r=>'<option value="'+r+'"'+(r===6?" selected":"")+'>Round '+r+(r===0?" (inherited)":"")+(r===6?" (final)":"")+'</option>').join("");
-  sel.onchange=()=>{ ROUND=+sel.value; document.getElementById("sf-roi").textContent=pct(F.roi[ROUND]); go(current); };
+  sel.innerHTML=[0,1,2,3,4,5,6].map(r=>'<option value="'+r+'"'+(r===6?" selected":"")+'>R'+r+(r===0?" inherited":"")+(r===6?" final":"")+'</option>').join("");
+  sel.onchange=()=>{ ROUND=+sel.value; go(current); };
 }
 document.addEventListener("keydown",e=>{
   if(e.target.matches("input,select,textarea")) return;
