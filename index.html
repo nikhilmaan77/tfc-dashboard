@@ -997,7 +997,7 @@ function v2(){
        "Vitamin C "+num(at("components","Vitamin C","Economic inventory (weeks)",6),2)+" weeks; others "+
        num(Math.min.apply(null,COMPONENTS.map(c=>at("components",c,"Economic inventory (weeks)",6))),2)+" to "+
        num(Math.max.apply(null,COMPONENTS.map(c=>at("components",c,"Economic inventory (weeks)",6))),2),"partial"]
-    ],"On-shelf availability is capped by the service level promised in the sales contract, not only by supply. The two 1-litre products sold to Food & Groceries and LAND Market sit at exactly 90.00%, which is a contractual ceiling rather than a supply failure."],
+    ],"On-shelf availability is capped by the service level promised in the sales contract, not only by supply. The 1-litre Orange line sits at exactly 90.00% and the 1-litre Mango line at 91.14%, which reflects the contract rather than a supply failure."],
     ["Sales",[
       ["Achieved service level, order lines","96% promised",pct(DATA.cumulativeServiceLevel.serviceLevel[6]),"met"],
       ["Attained shelf life","75% promised",CUSTOMERS.map(c=>pct(at("customers",c,"Attained shelf life (%)",6),2)).join(" / "),"met"],
@@ -1401,7 +1401,7 @@ function v6(){
                   {t:pct(ob,2),v:ob,cls:ob>0.05?"cell-bad":""},
                   {t:pct(mp,2),v:mp,cls:mp>0.55?"cell-bad":""}];
         }),{sortable:true})+
-      '<div class="callout">Sort by any column and the same two products come to the top: both C-power lines carry the highest obsolescence, the highest forecast error and the lowest service. They are the smallest volumes in the range, which is why they are the hardest to forecast and the quickest to age. Shelf life is the one promise we clear comfortably everywhere, at about 86% delivered against 75% promised.</div>'),
+      '<div class="callout">Three of these five columns point at the same pair. Both C-power lines carry the highest obsolescence and the highest forecast error, and they are the two lowest on service. They are also the two smallest volumes in the range, which is what makes them hard to forecast and quick to age. On-shelf availability does not follow that pattern: the lowest figures there are the 1-litre Orange line at exactly 90.00% and the 1-litre Mango line at 91.14%, which is the service level written into those contracts rather than a supply problem. Shelf life we clear comfortably across the whole range, at roughly 86% delivered against 75% promised.</div>'),
 
     card("s6","The Round 2 shelf-life lesson","What happened the one round the promise was raised.",
       barChart(DATA.cumulativeServiceLevel.obsolescence,R_LABELS,
